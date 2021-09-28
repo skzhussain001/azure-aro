@@ -9,6 +9,8 @@ trigger:
 pool:
   name: SelfHosted
 
+container: ubuntu:18.04
+
 steps:
 - task: BatchScript@1
   inputs:
