@@ -12,7 +12,7 @@ pool:
 steps:
 - task: AzureCLI@2
   inputs:
-    azureSubscription: ''
+    azureSubscription: '$(SUBSCRIPTION_ID)'
     scriptType: 'bash'
     scriptLocation: 'scriptPath'
     scriptPath: 'aro4-build.sh'
