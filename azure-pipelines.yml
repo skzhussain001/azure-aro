@@ -8,7 +8,6 @@ trigger:
 
 pool:
   name: SelfHosted
-  vmImage: ubuntu-latest
 
 steps:
 - task: BatchScript@1
