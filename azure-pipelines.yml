@@ -10,13 +10,6 @@ pool:
   vmImage: ubuntu-latest
 
 steps:
-- task: AzureCLI@2
-  inputs:
-    azureSubscription: '$(SUBSCRIPTION_ID)'
-    scriptType: 'bash'
-    scriptLocation: 'scriptPath'
-    scriptPath: 'aro4-build.sh'
-    arguments: 'testdomain.com'
 
 - script: |
     echo Add other tasks to build, test, and deploy your project.
