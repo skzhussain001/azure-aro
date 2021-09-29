@@ -12,9 +12,6 @@ pool:
 container: ubuntu:18.04
 
 steps:
-- task: BatchScript@1
-  inputs:
-    filename: 'aro4-build.sh'
 - script: |
     echo Add other tasks to build, test, and deploy your project.
     echo See https://aka.ms/yaml
