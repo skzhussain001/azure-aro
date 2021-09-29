@@ -136,6 +136,7 @@ function register_resource_providers(){
         az provider register -n Microsoft.RedHatOpenShift --wait > /dev/null
         echo "done."
         echo -n "Verifying the ARO RP is registered..."
+        az provider show -n Microsoft.RedHatOpenShift -o table
         if [ -n "$(az provider show -n Microsoft.RedHatOpenShift -o table | grep -E '(Unregistered|NotRegistered)')" ]; then
             echo "error! Unable to register the ARO RP. Please remediate this."
             exit 1
