@@ -80,7 +80,7 @@ fi
 
 if [ -z ${VNET_NAME} ];
 then 
-    VNET_NAME="$VNET_NAME-vnet"
+    VNET_NAME="$CLUSTER-vnet"
     echo "##vso[task.setvariable variable=VNET_NAME]$VNET_NAME"
     export VNET_NAME
 fi 
