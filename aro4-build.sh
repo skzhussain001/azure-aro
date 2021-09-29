@@ -179,7 +179,7 @@ function configure_networking(){
 
     # VNet Creation
     echo -n "Creating Virtual Network..."
-    az network vnet create -g "$VNET_RG" -n $VNET_NAME --address-prefixes $VNET/16 $CUSTOMDNSSERVERS -o table > /dev/null
+    az network vnet create -g "$RESOURCEGROUP" -n $VNET_NAME --address-prefixes $VNET/16 $CUSTOMDNSSERVERS -o table > /dev/null
     echo "done"
 
     # Subnet Creation
