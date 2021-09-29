@@ -12,10 +12,6 @@ pool:
 container: quay.io/takinosh/aro-container:v1
 
 steps:
-- script: |
-    echo Add other tasks to build, test, and deploy your project.
-    echo See https://aka.ms/yaml
-  displayName: 'Run a multi-line script'
 - task: AzureCLI@2
   inputs:
     azureSubscription: '$(SUBSCRIPTION_ID)'
@@ -24,3 +20,11 @@ steps:
     scriptPath: 'aro4-build.sh'
     arguments: '--register-resource-providers'
   displayName: 'Register the resource providers'
+- task: AzureCLI@2
+  inputs:
+    azureSubscription: '$(SUBSCRIPTION_ID)'
+    scriptType: 'bash'
+    scriptLocation: 'scriptPath'
+    scriptPath: 'aro4-build.sh'
+    arguments: '--configure-networking'
+  displayName: 'Create a virtual network containing two empty subnets'
