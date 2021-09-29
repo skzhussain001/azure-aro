@@ -52,6 +52,7 @@ export WORKER_SIZE
 
 BUILDDATE="$(date +%Y%m%d-%H%M%S)"
 export BUILDDATE
+echo "##vso[task.setvariable variable=BUILDDATE]$BUILDDATE"
 CLUSTER="aro-$(whoami)-$RAND"
 export CLUSTER
 RESOURCEGROUP="$CLUSTER-$LOCATION"
@@ -136,6 +137,7 @@ function check_custom_dns_server(){
 
 # Create a virtual network containing two empty subnets
 function configure_networking(){
+    echo "BUILDDATE ${BUILDDATE}"
     # Custom DNS Server Check
     check_custom_dns_server
 
