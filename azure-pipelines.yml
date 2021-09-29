@@ -23,3 +23,4 @@ steps:
     scriptLocation: 'scriptPath'
     scriptPath: 'aro4-build.sh'
     arguments: 'testdomain.com'
+  displayName: 'Run aro4 build script'
