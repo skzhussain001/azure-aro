@@ -125,6 +125,8 @@ function register_resource_providers(){
     echo -n "Creating Resource Group..."
     az group create -g "$RESOURCEGROUP" -l "$LOCATION" -o table >> /dev/null 
     echo "done"
+
+    exit 0
 }
 
 # Create a virtual network containing two empty subnets
