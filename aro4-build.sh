@@ -14,6 +14,7 @@
 
 ################################################################################################## Initialize
 set -eu
+set -x 
 
 if [ $# -gt 1 ]; then
     echo "Usage: $BASH_SOURCE <Custom Domain eg. aro.foo.com>"
