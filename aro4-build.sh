@@ -112,14 +112,8 @@ function register_resource_providers(){
         echo " "
     fi
 
-    if [ -n "$DNSSERVERS" ]; then
-        CUSTOMDNSSERVERS="--dns-servers $DNSSERVERS"
-        export CUSTOMDNSSERVERS
-        echo "You have specified that the ARO virtual network should be created using the custom DNS servers: $DNSSERVERS"
-        echo " "
-    else
-        CUSTOMDNSSERVERS=""
-    fi
+    # Custom DNS Server Check
+    check_custom_dns_server
 
     # Resource Group Creation
     echo -n "Creating Resource Group..."
@@ -129,8 +123,22 @@ function register_resource_providers(){
     exit 0
 }
 
+function check_custom_dns_server()
+    if [ -n "$DNSSERVERS" ]; then
+        CUSTOMDNSSERVERS="--dns-servers $DNSSERVERS"
+        export CUSTOMDNSSERVERS
+        echo "You have specified that the ARO virtual network should be created using the custom DNS servers: $DNSSERVERS"
+        echo " "
+    else
+        CUSTOMDNSSERVERS=""
+    fi
+}
+
 # Create a virtual network containing two empty subnets
 function configure_networking(){
+    # Custom DNS Server Check
+    check_custom_dns_server
+
     # VNet Creation
     echo -n "Creating Virtual Network..."
     az network vnet create -g "$VNET_RG" -n $VNET_NAME --address-prefixes $VNET/16 $CUSTOMDNSSERVERS -o table > /dev/null
