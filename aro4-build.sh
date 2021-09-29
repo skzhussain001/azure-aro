@@ -123,7 +123,7 @@ function register_resource_providers(){
     exit 0
 }
 
-function check_custom_dns_server()
+function check_custom_dns_server(){
     if [ -n "$DNSSERVERS" ]; then
         CUSTOMDNSSERVERS="--dns-servers $DNSSERVERS"
         export CUSTOMDNSSERVERS
