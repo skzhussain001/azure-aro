@@ -22,5 +22,5 @@ steps:
     scriptType: 'bash'
     scriptLocation: 'scriptPath'
     scriptPath: 'aro4-build.sh'
-    arguments: 'testdomain.com'
-  displayName: 'Run aro4 build script'
+    arguments: '--register-resource-providers'
+  displayName: 'Register the resource providers'
