@@ -9,7 +9,7 @@ trigger:
 pool:
   name: SelfHosted
 
-container: mcr.microsoft.com/azure-cli:latest
+container: quay.io/takinosh/aro-container:v1
 
 steps:
 - script: |
