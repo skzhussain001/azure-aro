@@ -195,7 +195,7 @@ function configure_networking(){
     az network vnet subnet update -g "$RESOURCEGROUP" --vnet-name "$VNET_NAME" -n "$CLUSTER-master" --disable-private-link-service-network-policies true -o table > /dev/null
     echo "done"
     echo -n "Adding ARO RP Contributor access to VNET..."
-    az role assignment create --scope /subscriptions/$SUBID/resourceGroups/$RESOURCEGROUP/providers/Microsoft.Network/virtualNetworks/$VNET_NAME --assignee f1dd0a37-89c6-4e07-bcd1-ffd3d43d8875 --role "Contributor" -o table > /dev/null
+    az role assignment create --scope /subscriptions/$SUBID/resourceGroups/$RESOURCEGROUP/providers/Microsoft.Network/virtualNetworks/$VNET_NAME --assignee ${ROLE_ASSIGNEE} --role "Contributor" -o table > /dev/null
     echo "done"
     exit 0
 }
