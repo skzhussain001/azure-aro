@@ -59,7 +59,7 @@ fi
 
 if [ -z ${CLUSTER} ];
 then 
-    CLUSTER="aro-$(whoami)-$RAND"
+    CLUSTER="aro-$RAND"
     echo "##vso[task.setvariable variable=CLUSTER]$CLUSTER"
     export CLUSTER
 fi 
