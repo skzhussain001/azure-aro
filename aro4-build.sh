@@ -29,8 +29,8 @@ export RAND
 # If you wish to use custom DNS servers, you can place them into the variable below as space-separated entries
 
 APIPRIVACY="Public"
-#DNSSERVERS=""
-DNSSERVERS="1.2.3.4 55.55.55.55 15.15.15.15"
+DNSSERVERS=""
+#DNSSERVERS="1.2.3.4 55.55.55.55 15.15.15.15"
 INGRESSPRIVACY="Public"
 LOCATION="eastus"
 MASTER_SIZE="Standard_D8s_v3"
