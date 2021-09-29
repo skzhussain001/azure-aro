@@ -142,6 +142,32 @@ function register_resource_providers(){
         echo "done."
     fi
 
+    if [ -n "$(az provider show -n Microsoft.Authorization -o table | grep -E '(Unregistered|NotRegistered)')" ]; then
+        echo "The ARO resource provider has not been registered for your subscription $SUBID."
+        echo -n "I will attempt to register the ARO RP now (this may take a few minutes)..."
+        az provider register -n Microsoft.Authorization --wait > /dev/null
+        echo "done."
+        echo -n "Verifying the Microsoft.Authorization is registered..."
+        if [ -n "$(az provider show -n Microsoft.Authorization -o table | grep -E '(Unregistered|NotRegistered)')" ]; then
+            echo "error! Unable to register Microsoft.Authorization. Please remediate this."
+            exit 1
+        fi
+        echo "done."
+    fi
+
+    if [ -n "$(az provider show -n Microsoft.Storage -o table | grep -E '(Unregistered|NotRegistered)')" ]; then
+        echo "The ARO resource provider has not been registered for your subscription $SUBID."
+        echo -n "I will attempt to register the Storage now (this may take a few minutes)..."
+        az provider register -n Microsoft.Storage --wait > /dev/null
+        echo "done."
+        echo -n "Verifying the Microsoft.Storage is registered..."
+        if [ -n "$(az provider show -n Microsoft.Storage -o table | grep -E '(Unregistered|NotRegistered)')" ]; then
+            echo "error! Unable to register the Microsoft.Storage. Please remediate this."
+            exit 1
+        fi
+        echo "done."
+    fi
+
     if [ $# -eq 1 ]; then
         CUSTOMDOMAIN="--domain=$1"
         export CUSTOMDOMAIN
