@@ -9,7 +9,7 @@ trigger:
 pool:
   name: SelfHosted
 
-container: quay.io/takinosh/aro-container:v1
+container: quay.io/takinosh/aro-container:v2
 
 steps:
 - task: AzureCLI@2
