@@ -9,7 +9,7 @@ trigger:
 pool:
   name: SelfHosted
 
-container: ubuntu:18.04
+container: mcr.microsoft.com/azure-cli:latest
 
 steps:
 - script: |
