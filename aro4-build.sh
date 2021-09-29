@@ -115,6 +115,7 @@ echo "----------------------------------"
 
 # Register the resource providers
 function register_resource_providers(){
+    az account set --subscription $SUBID
 
     if [ -n "$(az provider show -n Microsoft.Compute -o table | grep -E '(Unregistered|NotRegistered)')" ]; then
         echo "The Azure Compute resource provider has not been registered for your subscription $SUBID."
@@ -205,6 +206,9 @@ function configure_networking(){
     RESOURCEGROUP=$(echo $RESOURCEGROUP | sed 's/ *$//g' | sed "s/['\"]//g")
     VNET_NAME=$(echo $VNET_NAME | sed 's/ *$//g' | sed "s/['\"]//g")
     CLUSTER=$(echo $CLUSTER | sed 's/ *$//g' | sed "s/['\"]//g")
+
+    az account set --subscription $SUBID
+
     # VNet Creation
     echo -n "Creating Virtual Network..."
     az network vnet create -g "$RESOURCEGROUP" -n $VNET_NAME --address-prefixes $VNET/16 $CUSTOMDNSSERVERS -o table > /dev/null
