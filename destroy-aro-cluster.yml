@@ -1,0 +1,28 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+trigger:
+- master
+
+pool:
+  name: SelfHosted
+
+container: quay.io/takinosh/aro-container:v1
+
+steps:
+- task: AzureCLI@2
+  inputs:
+    azureSubscription: '$(SUBSCRIPTION_ID)'
+    scriptType: 'bash'
+    scriptLocation: 'scriptPath'
+    scriptPath: 'delete-aro-cluster.sh'
+  displayName: 'Delete an Azure Red Hat OpenShift 4 cluster'
+- task: AzureCLI@2
+  inputs:
+    azureSubscription: '$(SUBSCRIPTION_ID)'
+    scriptType: 'bash'
+    scriptLocation: 'scriptPath'
+    scriptPath: 'cleanappsp.sh'
+  displayName: ' delete *all* Azure AD Apps and Service Principals'
