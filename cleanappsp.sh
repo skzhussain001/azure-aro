@@ -12,6 +12,7 @@
 # Erases all Azure AD Apps and Service Principals that start with "aro-".
 # This is useful when clusters are stood up / torn down with frequency to keep AAD clean.
 # Note: This script will delete *all* Azure AD Apps and Service Principals, without confirmation, with the "aro-" prefix. All others will remain.
+set -x 
 
 for i in `az ad app list --show-mine -o json | jq -r ".[] | .displayName" |grep "aro-"`; do az ad app list --display-name $i -o json | jq -r ".[] | .objectId"; done > appids
 
