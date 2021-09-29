@@ -50,9 +50,13 @@ export VNET_RG
 export WORKERS
 export WORKER_SIZE
 
-BUILDDATE="$(date +%Y%m%d-%H%M%S)"
-export BUILDDATE
-echo "##vso[task.setvariable variable=BUILDDATE]$BUILDDATE"
+if [ -z ${BUILDDATE} ];
+then 
+    BUILDDATE="$(date +%Y%m%d-%H%M%S)"
+    echo "##vso[task.setvariable variable=BUILDDATE]$BUILDDATE"
+    export BUILDDATE
+fi 
+
 CLUSTER="aro-$(whoami)-$RAND"
 export CLUSTER
 RESOURCEGROUP="$CLUSTER-$LOCATION"
