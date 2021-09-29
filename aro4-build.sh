@@ -176,7 +176,7 @@ function configure_networking(){
     echo "BUILDDATE ${BUILDDATE}"
     # Custom DNS Server Check
     check_custom_dns_server
-    RESOURCEGROUP=$(echo $RESOURCEGROUP | sed 's/ *$//g'`)
+    RESOURCEGROUP=$(echo $RESOURCEGROUP | sed 's/ *$//g')
     # VNet Creation
     echo -n "Creating Virtual Network..."
     az network vnet create -g "$RESOURCEGROUP" -n $VNET_NAME --address-prefixes $VNET/16 $CUSTOMDNSSERVERS -o table > /dev/null
