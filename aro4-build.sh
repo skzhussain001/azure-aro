@@ -282,8 +282,19 @@ function check_pull_secret(){
         echo "done"
         PULLSECRET="--pull-secret=$(cat pull-secret.txt)"
         export PULLSECRET
+    elif [ -z $CREATEPULLSECRET ];
+    then 
+        echo $CREATEPULLSECRET > pull-secret.txt
+        echo -n "Removing extra characters from pull-secret.txt..."
+        tr -d "\n\r" < pull-secret.txt >pull-secret.tmp
+        rm -f pull-secret.txt
+        mv pull-secret.tmp pull-secret.txt
+        echo "done"
+        PULLSECRET="--pull-secret=$(cat pull-secret.txt)"
+        export PULLSECRET
     else
         echo "not detected."
+        exit 1
     fi
     echo " "
 }
@@ -291,6 +302,9 @@ function check_pull_secret(){
 
 ################################################################################################## Build ARO
 function create_aro_cluster(){
+    # create pull secret 
+    check_pull_secret
+
     # Build ARO
     echo "=============================================================================================================================================================================="
     echo "Building ARO with 3 x $MASTER_SIZE masters & $WORKERS x $WORKER_SIZE sized workers - this takes roughly 30-40mins. The time is now: $(date)..."
