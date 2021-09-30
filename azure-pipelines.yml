@@ -14,7 +14,7 @@ container: quay.io/takinosh/aro-container:v2
 steps:
 - task: AzureCLI@2
   inputs:
-    azureSubscription: '$(SUBSCRIPTION_ID)'
+    azureSubscription: 'Azure subscription 1(5)(1b84a886-709a-4b1b-98d6-d00f7f65452e)'
     scriptType: 'bash'
     scriptLocation: 'scriptPath'
     scriptPath: 'aro4-build.sh'
@@ -22,7 +22,7 @@ steps:
   displayName: 'Register the resource providers'
 - task: AzureCLI@2
   inputs:
-    azureSubscription: '$(SUBSCRIPTION_ID)'
+    azureSubscription: 'Azure subscription 1(5)(1b84a886-709a-4b1b-98d6-d00f7f65452e)'
     scriptType: 'bash'
     scriptLocation: 'scriptPath'
     scriptPath: 'aro4-build.sh'
@@ -30,7 +30,7 @@ steps:
   displayName: 'Create a virtual network containing two empty subnets'
 - task: AzureCLI@2
   inputs:
-    azureSubscription: '$(SUBSCRIPTION_ID)'
+    azureSubscription: 'Azure subscription 1(5)(1b84a886-709a-4b1b-98d6-d00f7f65452e)'
     scriptType: 'bash'
     scriptLocation: 'scriptPath'
     scriptPath: 'aro4-build.sh'
