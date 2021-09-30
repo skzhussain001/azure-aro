@@ -252,7 +252,7 @@ function configure_networking(){
     echo -n "Adding ARO RP Contributor access to VNET..."
     #az role assignment create --scope /subscriptions/$SUBID/resourceGroups/$RESOURCEGROUP/providers/Microsoft.Network/virtualNetworks/$VNET_NAME --assignee ${ROLE_ASSIGNEE}  --role "Contributor" -o table > /dev/null
     echo "az role assignment create --scope /subscriptions/$SUBID/resourceGroups/$RESOURCEGROUP/providers/Microsoft.Network/virtualNetworks/$VNET_NAME  --assignee-object-id ${ROLE_ASSIGNEE}  --role "Contributor" --assignee-principal-type ServicePrincipal"
-    COMMAND="az role assignment create --scope /subscriptions/$SUBID/resourceGroups/$RESOURCEGROUP/providers/Microsoft.Network/virtualNetworks/$VNET_NAME  --assignee-object-id ${ROLE_ASSIGNEE}  --role "Contributor" --assignee-principal-type ServicePrincipal > /dev/null"
+    COMMAND="az role assignment create --scope /subscriptions/$SUBID/resourceGroups/$RESOURCEGROUP/providers/Microsoft.Network/virtualNetworks/$VNET_NAME  --assignee-object-id ${ROLE_ASSIGNEE}  --role "Contributor" --assignee-principal-type ServicePrincipal"
     retry ${COMMAND}
 
     echo "done"
