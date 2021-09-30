@@ -302,6 +302,8 @@ function check_pull_secret(){
 
 ################################################################################################## Build ARO
 function create_aro_cluster(){
+
+    az account set --subscription $SUBID
     # create pull secret 
     check_pull_secret
 
