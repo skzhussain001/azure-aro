@@ -282,7 +282,7 @@ function check_pull_secret(){
         echo "done"
         PULLSECRET="--pull-secret=$(cat pull-secret.txt)"
         export PULLSECRET
-    elif [ -z $CREATEPULLSECRET ];
+    elif [ ! -z $CREATEPULLSECRET ];
     then 
         echo $CREATEPULLSECRET > pull-secret.txt
         echo -n "Removing extra characters from pull-secret.txt..."
