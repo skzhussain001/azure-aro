@@ -207,12 +207,13 @@ function fail {
 function retry {
   local n=1
   local max=5
-  local delay=15
+  local delay=30
   while true; do
     "$@" && break || {
       if [[ $n -lt $max ]]; then
         ((n++))
         echo "Command failed. Attempt $n/$max:"
+        register_resource_providers
         sleep $delay;
       else
         fail "The command has failed after $n attempts."
