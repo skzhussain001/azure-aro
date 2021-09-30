@@ -28,3 +28,11 @@ steps:
     scriptPath: 'aro4-build.sh'
     arguments: '--configure-networking'
   displayName: 'Create a virtual network containing two empty subnets'
+- task: AzureCLI@2
+  inputs:
+    azureSubscription: '$(SUBSCRIPTION_ID)'
+    scriptType: 'bash'
+    scriptLocation: 'scriptPath'
+    scriptPath: 'aro4-build.sh'
+    arguments: '--create-aro-cluster'
+  displayName: 'Deploy ARO Cluster'

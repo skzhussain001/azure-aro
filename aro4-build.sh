@@ -256,11 +256,14 @@ function configure_networking(){
     echo -n "Disabling 'PrivateLinkServiceNetworkPolicies' in 'Master' Subnet..."
     az network vnet subnet update -g "$RESOURCEGROUP" --vnet-name "$VNET_NAME" -n "$CLUSTER-master" --disable-private-link-service-network-policies true -o table > /dev/null
     echo "done"
-    echo -n "Adding ARO RP Contributor access to VNET..."
+    #echo -n "Adding ARO RP Contributor access to VNET..."
     #az role assignment create --scope /subscriptions/$SUBID/resourceGroups/$RESOURCEGROUP/providers/Microsoft.Network/virtualNetworks/$VNET_NAME --assignee ${ROLE_ASSIGNEE}  --role "Contributor" -o table > /dev/null
-    echo "az role assignment create --scope /subscriptions/$SUBID/resourceGroups/$RESOURCEGROUP/providers/Microsoft.Network/virtualNetworks/$VNET_NAME  --assignee-object-id ${ROLE_ASSIGNEE}  --role "Contributor" --assignee-principal-type ServicePrincipal"
-    COMMAND="az role assignment create --scope /subscriptions/$SUBID/resourceGroups/$RESOURCEGROUP/providers/Microsoft.Network/virtualNetworks/$VNET_NAME  --assignee-object-id ${ROLE_ASSIGNEE}  --role "Contributor" --assignee-principal-type ServicePrincipal"
-    retry ${COMMAND}
+    ######
+    ### REMOVING FOR NOW
+    ######
+    #echo "az role assignment create --scope /subscriptions/$SUBID/resourceGroups/$RESOURCEGROUP/providers/Microsoft.Network/virtualNetworks/$VNET_NAME  --assignee-object-id ${ROLE_ASSIGNEE}  --role "Contributor" --assignee-principal-type ServicePrincipal"
+    #COMMAND="az role assignment create --scope /subscriptions/$SUBID/resourceGroups/$RESOURCEGROUP/providers/Microsoft.Network/virtualNetworks/$VNET_NAME  --assignee-object-id ${ROLE_ASSIGNEE}  --role "Contributor" --assignee-principal-type ServicePrincipal"
+    #retry ${COMMAND}
 
     echo "done"
     exit 0
@@ -465,7 +468,7 @@ while [[ $1 = -?* ]]; do
     -p|--check-pull-secret) shift; check_pull_secret;;
     -n|--configure-networking) shift; configure_networking;;
     -c|--create-aro-cluster) shift; create_aro_cluster;;
-    --f|--create-forward-zone ) shift; create_forward_zone;;
+    -f|--create-forward-zone ) shift; create_forward_zone;;
     -pr|--print-output) shift; print_output;;
     --endopts) shift; break ;;
     *) deploy_all ;;
