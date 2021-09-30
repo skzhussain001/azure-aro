@@ -217,6 +217,8 @@ function retry {
       if [[ $n -lt $max ]]; then
         ((n++))
         echo "Command failed. Attempt $n/$max:"
+        az account show
+        sleep 3s
         create_microsoft_authorization
         sleep $delay;
       else
