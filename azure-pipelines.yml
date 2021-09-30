@@ -19,7 +19,6 @@ steps:
     scriptLocation: 'scriptPath'
     scriptPath: 'aro4-build.sh'
     arguments: '--register-resource-providers'
-    addSpnToEnvironment: true
   displayName: 'Register the resource providers'
 - task: AzureCLI@2
   inputs:
