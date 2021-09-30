@@ -114,6 +114,21 @@ echo "Building Azure Red Hat OpenShift 4"
 echo "----------------------------------"
 
 # Register the resource providers
+function create_microsoft_authorization(){
+        if [ -n "$(az provider show -n Microsoft.Authorization -o table | grep -E '(Unregistered|NotRegistered)')" ]; then
+        echo "The ARO resource provider has not been registered for your subscription $SUBID."
+        echo -n "I will attempt to register the ARO RP now (this may take a few minutes)..."
+        az provider register -n Microsoft.Authorization --wait > /dev/null
+        echo "done."
+        echo -n "Verifying the Microsoft.Authorization is registered..."
+        if [ -n "$(az provider show -n Microsoft.Authorization -o table | grep -E '(Unregistered|NotRegistered)')" ]; then
+            echo "error! Unable to register Microsoft.Authorization. Please remediate this."
+            exit 1
+        fi
+        echo "done."
+    fi
+}
+
 function register_resource_providers(){
     az account set --subscription $SUBID
 
@@ -144,18 +159,7 @@ function register_resource_providers(){
         echo "done."
     fi
 
-    if [ -n "$(az provider show -n Microsoft.Authorization -o table | grep -E '(Unregistered|NotRegistered)')" ]; then
-        echo "The ARO resource provider has not been registered for your subscription $SUBID."
-        echo -n "I will attempt to register the ARO RP now (this may take a few minutes)..."
-        az provider register -n Microsoft.Authorization --wait > /dev/null
-        echo "done."
-        echo -n "Verifying the Microsoft.Authorization is registered..."
-        if [ -n "$(az provider show -n Microsoft.Authorization -o table | grep -E '(Unregistered|NotRegistered)')" ]; then
-            echo "error! Unable to register Microsoft.Authorization. Please remediate this."
-            exit 1
-        fi
-        echo "done."
-    fi
+    create_microsoft_authorization
 
     if [ -n "$(az provider show -n Microsoft.Storage -o table | grep -E '(Unregistered|NotRegistered)')" ]; then
         echo "The ARO resource provider has not been registered for your subscription $SUBID."
@@ -213,7 +217,7 @@ function retry {
       if [[ $n -lt $max ]]; then
         ((n++))
         echo "Command failed. Attempt $n/$max:"
-        register_resource_providers
+        create_microsoft_authorization
         sleep $delay;
       else
         fail "The command has failed after $n attempts."
@@ -331,8 +335,8 @@ function create_forward_zone(){
         if [ -z "$(az network dns record-set list -g $DNSRG -z $CUSTOMDOMAINNAME -o table |grep api)" ]; then
             echo -n "An A record for the ARO API does not exist. Creating..." 
             IPAPI="$(az aro show -n $CLUSTER -g $RESOURCEGROUP -o tsv --query apiserverProfile.ip)"
-        export IPAPI
-        az network dns record-set a add-record -z $CUSTOMDOMAINNAME -g $DNSRG -a $IPAPI -n api --only-show-errors -o table >> /dev/null 2>&1
+            export IPAPI
+            az network dns record-set a add-record -z $CUSTOMDOMAINNAME -g $DNSRG -a $IPAPI -n api --only-show-errors -o table >> /dev/null 2>&1
             echo "done."
         else
             echo "An A record appears to already exist for the ARO API server. Please verify this in your DNS zone configuration."
@@ -341,7 +345,7 @@ function create_forward_zone(){
         if [ -z "$(az network dns record-set list -g $DNSRG -z $CUSTOMDOMAINNAME -o table |grep apps)" ]; then
             echo -n "An A record for the apps wildcard ingress does not exist. Creating..."
             IPAPPS="$(az aro show -n $CLUSTER -g $RESOURCEGROUP -o tsv --query ingressProfiles[*].ip)"
-        export IPAPPS
+            export IPAPPS
             az network dns record-set a add-record -z $CUSTOMDOMAINNAME -g $DNSRG -a $IPAPPS -n *.apps --only-show-errors -o table >> /dev/null 2>&1
             echo "done."
         else
