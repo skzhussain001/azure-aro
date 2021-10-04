@@ -312,6 +312,7 @@ function create_aro_cluster(){
     VNET_NAME=$(echo $VNET_NAME | sed 's/ *$//g' | sed "s/['\"]//g")
     CLUSTER=$(echo $CLUSTER | sed 's/ *$//g' | sed "s/['\"]//g")
     VNET_RG=$(echo $VNET_RG | sed 's/ *$//g' | sed "s/['\"]//g")
+    PULLSECRET=$(echo $PULLSECRET | sed 's/ *$//g' | sed "s/['\"]//g")
 
     # Build ARO
     echo "=============================================================================================================================================================================="
