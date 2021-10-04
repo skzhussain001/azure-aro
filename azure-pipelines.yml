@@ -27,6 +27,7 @@ steps:
     scriptLocation: 'scriptPath'
     scriptPath: 'aro4-build.sh'
     arguments: '--configure-networking'
+    addSpnToEnvironment: true
   displayName: 'Create a virtual network containing two empty subnets'
 - task: AzureCLI@2
   inputs:
