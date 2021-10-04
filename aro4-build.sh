@@ -290,7 +290,7 @@ function check_pull_secret(){
         #rm -f pull-secret.txt
         #mv pull-secret.tmp pull-secret.txt
         #echo "done"
-        PULLSECRET="--pull-secret='$(cat pull-secret.txt)'"
+        PULLSECRET="--pull-secret=$(cat pull-secret.txt)"
         export PULLSECRET
         echo ${PULLSECRET}
     else
