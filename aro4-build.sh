@@ -118,7 +118,7 @@ function create_microsoft_authorization(){
         if [ -n "$(az provider show -n Microsoft.Authorization -o table | grep -E '(Unregistered|NotRegistered)')" ]; then
         echo "The ARO resource provider has not been registered for your subscription $SUBID."
         echo -n "I will attempt to register the ARO RP now (this may take a few minutes)..."
-        az provider register -n Microsoft.Authorization --wait > /dev/null
+        az provider register -n Microsoft.Authorization --wait  --client-id $servicePrincipalId  --client-secret $servicePrincipalKey > /dev/null
         echo "done."
         echo -n "Verifying the Microsoft.Authorization is registered..."
         if [ -n "$(az provider show -n Microsoft.Authorization -o table | grep -E '(Unregistered|NotRegistered)')" ]; then
@@ -135,7 +135,7 @@ function register_resource_providers(){
     if [ -n "$(az provider show -n Microsoft.Compute -o table | grep -E '(Unregistered|NotRegistered)')" ]; then
         echo "The Azure Compute resource provider has not been registered for your subscription $SUBID."
         echo -n "I will attempt to register the Azure Compute RP now (this may take a few minutes)..."
-        az provider register -n Microsoft.Compute --wait > /dev/null
+        az provider register -n Microsoft.Compute --wait --client-id $servicePrincipalId  --client-secret $servicePrincipalKey  > /dev/null
         echo "done."
         echo -n "Verifying the Azure Compute RP is registered..."
     if [ -n "$(az provider show -n Microsoft.Compute -o table | grep -E '(Unregistered|NotRegistered)')" ]; then
@@ -148,7 +148,7 @@ function register_resource_providers(){
     if [ -n "$(az provider show -n Microsoft.RedHatOpenShift -o table | grep -E '(Unregistered|NotRegistered)')" ]; then
         echo "The ARO resource provider has not been registered for your subscription $SUBID."
         echo -n "I will attempt to register the ARO RP now (this may take a few minutes)..."
-        az provider register -n Microsoft.RedHatOpenShift --wait > /dev/null
+        az provider register -n Microsoft.RedHatOpenShift --wait --client-id $servicePrincipalId  --client-secret $servicePrincipalKey  > /dev/null
         echo "done."
         echo -n "Verifying the ARO RP is registered..."
         az provider show -n Microsoft.RedHatOpenShift -o table
@@ -164,7 +164,7 @@ function register_resource_providers(){
     if [ -n "$(az provider show -n Microsoft.Storage -o table | grep -E '(Unregistered|NotRegistered)')" ]; then
         echo "The ARO resource provider has not been registered for your subscription $SUBID."
         echo -n "I will attempt to register the Storage now (this may take a few minutes)..."
-        az provider register -n Microsoft.Storage --wait > /dev/null
+        az provider register -n Microsoft.Storage --wait --client-id $servicePrincipalId  --client-secret $servicePrincipalKey  > /dev/null
         echo "done."
         echo -n "Verifying the Microsoft.Storage is registered..."
         if [ -n "$(az provider show -n Microsoft.Storage -o table | grep -E '(Unregistered|NotRegistered)')" ]; then
@@ -186,7 +186,7 @@ function register_resource_providers(){
 
     # Resource Group Creation
     echo -n "Creating Resource Group..."
-    az group create -g "$RESOURCEGROUP" -l "$LOCATION" -o table >> /dev/null 
+    az group create -g "$RESOURCEGROUP" -l "$LOCATION" --client-id $servicePrincipalId  --client-secret $servicePrincipalKey  -o table >> /dev/null 
     echo "done"
 
     exit 0
