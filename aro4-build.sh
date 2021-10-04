@@ -322,14 +322,14 @@ function create_aro_cluster(){
     echo "az aro create -g $RESOURCEGROUP -n $CLUSTER --cluster-resource-group $RESOURCEGROUP-cluster --vnet=$VNET_NAME --vnet-resource-group=$VNET_RG --master-subnet=$CLUSTER-master --worker-subnet=$CLUSTER-worker --ingress-visibility=$INGRESSPRIVACY --apiserver-visibility=$APIPRIVACY --worker-count=$WORKERS --master-vm-size=$MASTER_SIZE --worker-vm-size=$WORKER_SIZE $CUSTOMDOMAIN $PULLSECRET -o table"
     echo " "
     # --only-show-errors
-    if [ -n "$(az provider show -n Microsoft.RedHatOpenShift  --client-id $servicePrincipalId  --client-secret $servicePrincipalKey  -o table | grep -E '(Unregistered|NotRegistered)')" ]; then
+    if [ -n "$(az provider show -n Microsoft.RedHatOpenShift  -o table | grep -E '(Unregistered|NotRegistered)')" ]; then
         echo "The ARO resource provider has not been registered for your subscription $SUBID."
         echo -n "I will attempt to register the ARO RP now (this may take a few minutes)..."
-        az provider register -n Microsoft.RedHatOpenShift --wait --client-id $servicePrincipalId  --client-secret $servicePrincipalKey  > /dev/null
+        az provider register -n Microsoft.RedHatOpenShift --wait > /dev/null
         echo "done."
         echo -n "Verifying the ARO RP is registered..."
         az provider show -n Microsoft.RedHatOpenShift -o table
-        if [ -n "$(az provider show -n Microsoft.RedHatOpenShift  --client-id $servicePrincipalId  --client-secret $servicePrincipalKey  -o table | grep -E '(Unregistered|NotRegistered)')" ]; then
+        if [ -n "$(az provider show -n Microsoft.RedHatOpenShift -o table | grep -E '(Unregistered|NotRegistered)')" ]; then
             echo "error! Unable to register the ARO RP. Please remediate this."
             exit 1
         fi
