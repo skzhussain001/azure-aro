@@ -285,12 +285,12 @@ function check_pull_secret(){
     elif [ ! -z $CREATEPULLSECRET ];
     then 
         echo $CREATEPULLSECRET > pull-secret.txt
-        echo -n "Removing extra characters from pull-secret.txt..."
-        tr -d "\n\r" < pull-secret.txt >pull-secret.tmp
-        rm -f pull-secret.txt
-        mv pull-secret.tmp pull-secret.txt
-        echo "done"
-        PULLSECRET="--pull-secret=$(cat pull-secret.txt)"
+        #echo -n "Removing extra characters from pull-secret.txt..."
+        #tr -d "\n\r" < pull-secret.txt >pull-secret.tmp
+        #rm -f pull-secret.txt
+        #mv pull-secret.tmp pull-secret.txt
+        #echo "done"
+        PULLSECRET="--pull-secret='$(cat pull-secret.txt)"
         export PULLSECRET
         echo ${PULLSECRET}
     else
