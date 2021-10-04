@@ -261,9 +261,9 @@ function configure_networking(){
     ######
     ### REMOVING FOR NOW
     ######
-    #echo "az role assignment create --scope /subscriptions/$SUBID/resourceGroups/$RESOURCEGROUP/providers/Microsoft.Network/virtualNetworks/$VNET_NAME  --assignee-object-id ${ROLE_ASSIGNEE}  --role "Contributor" --assignee-principal-type ServicePrincipal  --client-id $servicePrincipalId"
-    #COMMAND="az role assignment create --scope /subscriptions/$SUBID/resourceGroups/$RESOURCEGROUP/providers/Microsoft.Network/virtualNetworks/$VNET_NAME  --assignee-object-id ${ROLE_ASSIGNEE}  --role "Contributor" --assignee-principal-type ServicePrincipal --client-id $servicePrincipalId"
-    #retry ${COMMAND}
+    echo "az role assignment create --scope /subscriptions/$SUBID/resourceGroups/$RESOURCEGROUP/providers/Microsoft.Network/virtualNetworks/$VNET_NAME  --assignee-object-id ${ROLE_ASSIGNEE}  --role "Contributor" --assignee-principal-type ServicePrincipal "
+    COMMAND="az role assignment create --scope /subscriptions/$SUBID/resourceGroups/$RESOURCEGROUP/providers/Microsoft.Network/virtualNetworks/$VNET_NAME  --assignee-object-id ${ROLE_ASSIGNEE}  --role "Contributor" --assignee-principal-type ServicePrincipal "
+    retry ${COMMAND}
 
     echo "done"
     exit 0
@@ -292,6 +292,7 @@ function check_pull_secret(){
         echo "done"
         PULLSECRET="--pull-secret=$(cat pull-secret.txt)"
         export PULLSECRET
+        echo ${PULLSECRET}
     else
         echo "not detected."
         exit 1
