@@ -290,7 +290,7 @@ function check_pull_secret(){
         #rm -f pull-secret.txt
         #mv pull-secret.tmp pull-secret.txt
         #echo "done"
-        PULLSECRET="--pull-secret=$(cat pull-secret.txt)"
+        PULLSECRET="$(cat pull-secret.txt)"
         export PULLSECRET
         echo ${PULLSECRET}
     else
@@ -312,7 +312,7 @@ function create_aro_cluster(){
     VNET_NAME=$(echo $VNET_NAME | sed 's/ *$//g' | sed "s/['\"]//g")
     CLUSTER=$(echo $CLUSTER | sed 's/ *$//g' | sed "s/['\"]//g")
     VNET_RG=$(echo $VNET_RG | sed 's/ *$//g' | sed "s/['\"]//g")
-    PULLSECRET=$(echo $PULLSECRET | sed 's/ *$//g' | sed "s/['\"]//g")
+    #PULLSECRET=$(echo $PULLSECRET | sed 's/ *$//g' | sed "s/['\"]//g")
 
     # Build ARO
     echo "=============================================================================================================================================================================="
@@ -322,7 +322,7 @@ function create_aro_cluster(){
     echo "az aro create -g $RESOURCEGROUP -n $CLUSTER --cluster-resource-group $RESOURCEGROUP-cluster --vnet=$VNET_NAME --vnet-resource-group=$VNET_RG --master-subnet=$CLUSTER-master --worker-subnet=$CLUSTER-worker --ingress-visibility=$INGRESSPRIVACY --apiserver-visibility=$APIPRIVACY --worker-count=$WORKERS --master-vm-size=$MASTER_SIZE --worker-vm-size=$WORKER_SIZE $CUSTOMDOMAIN $PULLSECRET -o table"
     echo " "
     az account show
-    time az aro create -g "$RESOURCEGROUP" -n "$CLUSTER" --cluster-resource-group "$RESOURCEGROUP-cluster" --vnet="$VNET_NAME" --vnet-resource-group="$VNET_RG" --master-subnet="$CLUSTER-master" --worker-subnet="$CLUSTER-worker" --ingress-visibility="$INGRESSPRIVACY" --apiserver-visibility="$APIPRIVACY" --worker-count="$WORKERS" --master-vm-size="$MASTER_SIZE" --worker-vm-size="$WORKER_SIZE" $CUSTOMDOMAIN $PULLSECRET  --client-id $servicePrincipalId  --client-secret $servicePrincipalKey --only-show-errors -o table
+    time az aro create -g "$RESOURCEGROUP" -n "$CLUSTER" --cluster-resource-group "$RESOURCEGROUP-cluster" --vnet="$VNET_NAME" --vnet-resource-group="$VNET_RG" --master-subnet="$CLUSTER-master" --worker-subnet="$CLUSTER-worker" --ingress-visibility="$INGRESSPRIVACY" --apiserver-visibility="$APIPRIVACY" --worker-count="$WORKERS" --master-vm-size="$MASTER_SIZE" --worker-vm-size="$WORKER_SIZE" $CUSTOMDOMAIN --pull-secret=$PULLSECRET  --client-id $servicePrincipalId  --client-secret $servicePrincipalKey --only-show-errors -o table
 
 
     ################################################################################################## Post Provisioning
