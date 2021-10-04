@@ -304,6 +304,7 @@ function check_pull_secret(){
 function create_aro_cluster(){
 
     az account set --subscription $SUBID
+    
     # create pull secret 
     check_pull_secret
     RESOURCEGROUP=$(echo $RESOURCEGROUP | sed 's/ *$//g' | sed "s/['\"]//g")
@@ -318,6 +319,7 @@ function create_aro_cluster(){
     echo "Executing: "
     echo "az aro create -g $RESOURCEGROUP -n $CLUSTER --cluster-resource-group $RESOURCEGROUP-cluster --vnet=$VNET_NAME --vnet-resource-group=$VNET_RG --master-subnet=$CLUSTER-master --worker-subnet=$CLUSTER-worker --ingress-visibility=$INGRESSPRIVACY --apiserver-visibility=$APIPRIVACY --worker-count=$WORKERS --master-vm-size=$MASTER_SIZE --worker-vm-size=$WORKER_SIZE $CUSTOMDOMAIN $PULLSECRET -o table"
     echo " "
+    az account show
     time az aro create -g "$RESOURCEGROUP" -n "$CLUSTER" --cluster-resource-group "$RESOURCEGROUP-cluster" --vnet="$VNET_NAME" --vnet-resource-group="$VNET_RG" --master-subnet="$CLUSTER-master" --worker-subnet="$CLUSTER-worker" --ingress-visibility="$INGRESSPRIVACY" --apiserver-visibility="$APIPRIVACY" --worker-count="$WORKERS" --master-vm-size="$MASTER_SIZE" --worker-vm-size="$WORKER_SIZE" $CUSTOMDOMAIN $PULLSECRET  --client-id $servicePrincipalId  --client-secret $servicePrincipalKey --only-show-errors -o table
 
 
