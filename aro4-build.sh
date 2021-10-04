@@ -306,6 +306,10 @@ function create_aro_cluster(){
     az account set --subscription $SUBID
     # create pull secret 
     check_pull_secret
+    RESOURCEGROUP=$(echo $RESOURCEGROUP | sed 's/ *$//g' | sed "s/['\"]//g")
+    VNET_NAME=$(echo $VNET_NAME | sed 's/ *$//g' | sed "s/['\"]//g")
+    CLUSTER=$(echo $CLUSTER | sed 's/ *$//g' | sed "s/['\"]//g")
+    VNET_RG=$(echo $VNET_RG | sed 's/ *$//g' | sed "s/['\"]//g")
 
     # Build ARO
     echo "=============================================================================================================================================================================="
