@@ -186,7 +186,7 @@ function register_resource_providers(){
 
     # Resource Group Creation
     echo -n "Creating Resource Group..."
-    az group create -g "$RESOURCEGROUP" -l "$LOCATION" --client-id $servicePrincipalId  --client-secret $servicePrincipalKey  -o table >> /dev/null 
+    az group create -g "$RESOURCEGROUP" -l "$LOCATION"  -o table >> /dev/null 
     echo "done"
 
     exit 0
