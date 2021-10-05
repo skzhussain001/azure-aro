@@ -24,7 +24,7 @@ then
     export RESOURCEGROUP
 fi 
 
-GET_ARO_CLUSTER=$(az aro list | jq -r ".[].name" | grep ${CLUSTER}))
+GET_ARO_CLUSTER=$(az aro list | jq -r ".[].name" | grep ${CLUSTER})
 if [ ! -z $GET_ARO_CLUSTER ];
 then 
   az aro delete --resource-group $RESOURCEGROUP --name $CLUSTER --yes
