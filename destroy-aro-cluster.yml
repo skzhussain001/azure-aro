@@ -14,15 +14,15 @@ container: quay.io/takinosh/aro-container:v2
 steps:
 - task: AzureCLI@2
   inputs:
-    azureSubscription: '$(SUBSCRIPTION_ID)'
+    azureSubscription: 'Azure subscription 1(6)(1b84a886-709a-4b1b-98d6-d00f7f65452e)'
     scriptType: 'bash'
     scriptLocation: 'scriptPath'
     scriptPath: 'delete-aro-cluster.sh'
   displayName: 'Delete an Azure Red Hat OpenShift 4 cluster'
 - task: AzureCLI@2
   inputs:
-    azureSubscription: '$(SUBSCRIPTION_ID)'
+    azureSubscription: 'Azure subscription 1(6)(1b84a886-709a-4b1b-98d6-d00f7f65452e)'
     scriptType: 'bash'
     scriptLocation: 'scriptPath'
-    scriptPath: 'cleanappsp.sh'
+    scriptPath: 'clean-one-app-sp.sh'
   displayName: ' delete *all* Azure AD Apps and Service Principals'

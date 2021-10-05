@@ -12,15 +12,36 @@
 # Erases all Azure AD Apps and Service Principals that start with "aro-".
 # This is useful when clusters are stood up / torn down with frequency to keep AAD clean.
 # Note: This script will delete *all* Azure AD Apps and Service Principals, without confirmation, with the "aro-" prefix. All others will remain.
+set -x 
 
-for i in `az ad app list --show-mine -o json | jq -r ".[] | .displayName" |grep "aro-"`; do az ad app list --display-name $i -o json | jq -r ".[] | .objectId"; done > appids
+if [ -z ${RAND} ];
+then 
+    echo "RAND variable node defined"
+    exit 1
+fi 
+
+if [ -z ${CLUSTER} ];
+then 
+    CLUSTER="aro-$RAND"
+    echo "##vso[task.setvariable variable=CLUSTER]$CLUSTER"
+    export CLUSTER
+fi 
+
+if [ -z ${ROLE_ASSIGNEE} ];
+then 
+    ROLE_ASSIGNEE="$CLUSTER-role"
+    echo "##vso[task.setvariable variable=ROLE_ASSIGNEE]$ROLE_ASSIGNEE"
+    export ROLE_ASSIGNEE
+fi 
+
+for i in `az ad app list  -o json | jq -r ".[] | .displayName" |grep "${ROLE_ASSIGNEE}"`; do az ad app list --display-name $i -o json | jq -r ".[] | .objectId"; done > appids
 
 for i in `cat appids`; do
   echo "Erasing appid: $i"
   az ad app delete --id $i
 done
 
-for j in `az ad sp list --show-mine -o json | jq -r ".[] | .displayName" |grep "aro-"`; do az ad sp list --display-name $i -o json | jq -r ".[] | .objectId"; done > spids
+for j in `az ad sp list -o json | jq -r ".[] | .displayName" |grep "${ROLE_ASSIGNEE}"`; do az ad sp list --display-name $i -o json | jq -r ".[] | .objectId"; done > spids
 
 for j in `cat spids`; do
   echo "Erasing sp: $j"
@@ -29,3 +50,4 @@ done
 
 rm -f appids
 rm -f spids
+
