@@ -257,8 +257,9 @@ function configure_networking(){
     az network vnet subnet update -g "$RESOURCEGROUP" --vnet-name "$VNET_NAME" -n "$CLUSTER-master" --disable-private-link-service-network-policies true -o table > /dev/null
     echo "done"
 
-    #az ad sp create-for-rbac --role "Contributor" --name $SP_ID --scopes /subscriptions/${SUBID} /subscriptions/${SUBID}/resourceGroups/$RESOURCEGROUP /subscriptions/${SUBID}/resourceGroups/$VNET_NAME
-    #az ad sp create-for-rbac --role "Network Contributor" --name $SP_ID --scopes /subs
+    az ad sp create-for-rbac --role "Contributor" --name ${ROLE_ASSIGNEE} --scopes /subscriptions/${SUBID} /subscriptions/${SUBID}/resourceGroups/$RESOURCEGROUP /subscriptions/${SUBID}/resourceGroups/$VNET_NAME
+    az ad sp create-for-rbac --role "Network Contributor" --name ${ROLE_ASSIGNEE} --scopes /subscriptions/$SUBID/resourceGroups/$RESOURCEGROUP/providers/Microsoft.Network/virtualNetworks/$VNET_NAME
+    az ad sp create-for-rbac --role "User Access Administrator" --name ${ROLE_ASSIGNEE} --scopes /subscriptions/${SUBID}/resourceGroups/$RESOURCEGROUP /subscriptions/${SUBID}/resourceGroups/$VNET_NAME
 
     #echo -n "Adding ARO RP Contributor access to VNET..."
     #az role assignment create --scope /subscriptions/$SUBID/resourceGroups/$RESOURCEGROUP/providers/Microsoft.Network/virtualNetworks/$VNET_NAME --assignee ${ROLE_ASSIGNEE} --role "Contributor" -o table > /dev/null
@@ -339,8 +340,11 @@ function create_aro_cluster(){
         fi
         echo "done."
     fi
+    az ad sp create-for-rbac --name $SP_ID --role Contributor > serviceprincipal.json
+    export SP_APPID=$(jq -r .appId serviceprincipal.json)
 
-    time az aro create -g "$RESOURCEGROUP" -n "$CLUSTER" --cluster-resource-group "$RESOURCEGROUP-cluster" --vnet="$VNET_NAME" --vnet-resource-group="$VNET_RG" --master-subnet="$CLUSTER-master" --worker-subnet="$CLUSTER-worker" --ingress-visibility="$INGRESSPRIVACY" --apiserver-visibility="$APIPRIVACY" --worker-count="$WORKERS" --master-vm-size="$MASTER_SIZE" --worker-vm-size="$WORKER_SIZE" $CUSTOMDOMAIN --pull-secret=$PULLSECRET   -o table
+    export SP_PASSWD=$(jq -r '.password' serviceprincipal.json)
+    time az aro create -g "$RESOURCEGROUP" -n "$CLUSTER" --cluster-resource-group "$RESOURCEGROUP-cluster" --vnet="$VNET_NAME" --vnet-resource-group="$VNET_RG"  --client-id $SP_APPID --client-secret $SP_PASSWD --master-subnet="$CLUSTER-master" --worker-subnet="$CLUSTER-worker" --ingress-visibility="$INGRESSPRIVACY" --apiserver-visibility="$APIPRIVACY" --worker-count="$WORKERS" --master-vm-size="$MASTER_SIZE" --worker-vm-size="$WORKER_SIZE" $CUSTOMDOMAIN --pull-secret=$PULLSECRET   -o table
     #--client-id $servicePrincipalId  --client-secret $servicePrincipalKey 
 
     ################################################################################################## Post Provisioning
