@@ -258,9 +258,6 @@ function configure_networking(){
     echo "done"
 
     az ad sp create-for-rbac --role "Contributor" --name $SP_ID --scopes /subscriptions/${SUBID} /subscriptions/${SUBID}/resourceGroups/$RESOURCEGROUP /subscriptions/${SUBID}/resourceGroups/$VNET_NAME
-
-    az ad sp create-for-rbac --role "User Access Administrator" --name $SP_ID --scopes /subscriptions/${SUBID}/resourceGroups/$RESOURCEGROUP /subscriptions/${SUBID}/resourceGroups/$VNET_NAME
-
     az ad sp create-for-rbac --role "Network Contributor" --name $SP_ID --scopes /subs
 
     #echo -n "Adding ARO RP Contributor access to VNET..."
