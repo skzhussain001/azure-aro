@@ -242,6 +242,7 @@ function configure_networking(){
     RESOURCEGROUP=$(echo $RESOURCEGROUP | sed 's/ *$//g' | sed "s/['\"]//g")
     VNET_NAME=$(echo $VNET_NAME | sed 's/ *$//g' | sed "s/['\"]//g")
     CLUSTER=$(echo $CLUSTER | sed 's/ *$//g' | sed "s/['\"]//g")
+    ROLE_ASSIGNEE=$(echo $ROLE_ASSIGNEE | sed 's/ *$//g' | sed "s/['\"]//g")
 
     az account set --subscription $SUBID
 
