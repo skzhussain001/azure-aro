@@ -187,14 +187,6 @@ function register_resource_providers(){
         echo " "
     fi
 
-    # Custom DNS Server Check
-    check_custom_dns_server
-
-    # Resource Group Creation
-    echo -n "Creating Resource Group..."
-    az group create -g "$RESOURCEGROUP" -l "$LOCATION"  -o table >> /dev/null 
-    echo "done"
-
     exit 0
 }
 
@@ -244,6 +236,15 @@ function configure_networking(){
     CLUSTER=$(echo $CLUSTER | sed 's/ *$//g' | sed "s/['\"]//g")
 
     az account set --subscription $SUBID
+
+    # Custom DNS Server Check
+    check_custom_dns_server
+
+    # Resource Group Creation
+    echo -n "Creating Resource Group..."
+    az group create -g "$RESOURCEGROUP" -l "$LOCATION"  -o table >> /dev/null 
+    echo "done"
+
 
     # VNet Creation
     echo -n "Creating Virtual Network..."
@@ -346,11 +347,8 @@ function create_aro_cluster(){
         fi
         echo "done."
     fi
-    az ad sp create-for-rbac --name ${ROLE_ASSIGNEE} --role Contributor > serviceprincipal.json
-    export SP_APPID=$(jq -r .appId serviceprincipal.json)
 
-    export SP_PASSWD=$(jq -r '.password' serviceprincipal.json)
-    time az aro create -g "$RESOURCEGROUP" -n "$CLUSTER" --cluster-resource-group "$RESOURCEGROUP-cluster" --vnet="$VNET_NAME" --vnet-resource-group="$VNET_RG"  --client-id $SP_APPID --client-secret $SP_PASSWD --master-subnet="$CLUSTER-master" --worker-subnet="$CLUSTER-worker" --ingress-visibility="$INGRESSPRIVACY" --apiserver-visibility="$APIPRIVACY" --worker-count="$WORKERS" --master-vm-size="$MASTER_SIZE" --worker-vm-size="$WORKER_SIZE" $CUSTOMDOMAIN --pull-secret=$PULLSECRET   -o table
+    time az aro create -g "$RESOURCEGROUP" -n "$CLUSTER" --cluster-resource-group "$RESOURCEGROUP-cluster" --vnet="$VNET_NAME" --vnet-resource-group="$VNET_RG"  --client-id $(SP_APPID) --client-secret $(SP_PASSWD) --master-subnet="$CLUSTER-master" --worker-subnet="$CLUSTER-worker" --ingress-visibility="$INGRESSPRIVACY" --apiserver-visibility="$APIPRIVACY" --worker-count="$WORKERS" --master-vm-size="$MASTER_SIZE" --worker-vm-size="$WORKER_SIZE" $CUSTOMDOMAIN --pull-secret=$PULLSECRET   -o table
     #--client-id $servicePrincipalId  --client-secret $servicePrincipalKey 
 
     ################################################################################################## Post Provisioning
