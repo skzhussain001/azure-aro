@@ -282,7 +282,7 @@ function configure_networking(){
     export SP_APPID=$(jq -r .appId serviceprincipal.json)
     export SP_PASSWD=$(jq -r '.password' serviceprincipal.json)
 
-    ROLE_ASSIGNEE_ID=$(az ad sp list --display-name testing -o json | jq -r ".[] | .objectId")
+    ROLE_ASSIGNEE_ID=$(az ad sp list --display-name ${ROLE_ASSIGNEE}  -o json | jq -r ".[] | .objectId")
 
     #echo -n "Adding ARO RP Contributor access to VNET..."
     az role assignment create --scope /subscriptions/$SUBID/resourceGroups/$RESOURCEGROUP/providers/Microsoft.Network/virtualNetworks/$VNET_NAME --assignee ${ROLE_ASSIGNEE_ID} --role "Contributor" -o table --verbose #  > /dev/null
