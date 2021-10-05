@@ -30,6 +30,12 @@ steps:
     arguments: '--configure-networking'
     addSpnToEnvironment: true
   displayName: 'Create a virtual network containing two empty subnets'
+- task: CmdLine@2
+  inputs:
+    script: |
+      echo Write your commands here
+      
+      echo Hello world
 - task: AzureCLI@2
   inputs:
     azureSubscription: 'Azure subscription 1(6)(1b84a886-709a-4b1b-98d6-d00f7f65452e)'
