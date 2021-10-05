@@ -22,8 +22,8 @@ set -x
 #fi
 
 # Random string generator - don't change this.
-#RAND="$(echo $RANDOM | tr '[0-9]' '[a-z]')"
-#export RAND
+RAND="$(echo $RANDOM | tr '[0-9]' '[a-z]')"
+export RAND
 
 # Customize these variables as you need for your cluster deployment
 # If you wish to use custom DNS servers, you can place them into the variable below as space-separated entries
@@ -76,6 +76,14 @@ then
     echo "##vso[task.setvariable variable=RESOURCEGROUP]$RESOURCEGROUP"
     export RESOURCEGROUP
 fi 
+
+if [ -z ${ROLE_ASSIGNEE} ];
+then 
+    ROLE_ASSIGNEE="$CLUSTER-role"
+    echo "##vso[task.setvariable variable=ROLE_ASSIGNEE]$ROLE_ASSIGNEE"
+    export ROLE_ASSIGNEE
+fi 
+
 
 if [ -z ${SUBID} ];
 then 
@@ -264,18 +272,18 @@ function configure_networking(){
     az network vnet subnet update -g "$RESOURCEGROUP" --vnet-name "$VNET_NAME" -n "$CLUSTER-master" --disable-private-link-service-network-policies true -o table > /dev/null
     echo "done"
 
-    #az ad sp create-for-rbac --role "Contributor" --name ${ROLE_ASSIGNEE} --scopes /subscriptions/${SUBID} /subscriptions/${SUBID}/resourceGroups/$RESOURCEGROUP /subscriptions/${SUBID}/resourceGroups/$VNET_NAME --verbose 
-    #az ad sp create-for-rbac --role "Network Contributor" --name ${ROLE_ASSIGNEE} --scopes /subscriptions/$SUBID/resourceGroups/$RESOURCEGROUP/providers/Microsoft.Network/virtualNetworks/$VNET_NAME
-    #az ad sp create-for-rbac --role "User Access Administrator" --name ${ROLE_ASSIGNEE} --scopes /subscriptions/${SUBID}/resourceGroups/$RESOURCEGROUP /subscriptions/${SUBID}/resourceGroups/$VNET_NAME
+    az ad sp create-for-rbac --role "Contributor" --name ${ROLE_ASSIGNEE} --scopes /subscriptions/${SUBID} /subscriptions/${SUBID}/resourceGroups/$RESOURCEGROUP /subscriptions/${SUBID}/resourceGroups/$VNET_NAME --verbose 
+    az ad sp create-for-rbac --role "Network Contributor" --name ${ROLE_ASSIGNEE} --scopes /subscriptions/$SUBID/resourceGroups/$RESOURCEGROUP/providers/Microsoft.Network/virtualNetworks/$VNET_NAME
+    az ad sp create-for-rbac --role "User Access Administrator" --name ${ROLE_ASSIGNEE} --scopes /subscriptions/${SUBID}/resourceGroups/$RESOURCEGROUP /subscriptions/${SUBID}/resourceGroups/$VNET_NAME
 
     #echo -n "Adding ARO RP Contributor access to VNET..."
-    #az role assignment create --scope /subscriptions/$SUBID/resourceGroups/$RESOURCEGROUP/providers/Microsoft.Network/virtualNetworks/$VNET_NAME --assignee ${ROLE_ASSIGNEE} --role "Contributor" -o table --verbose #  > /dev/null
+    az role assignment create --scope /subscriptions/$SUBID/resourceGroups/$RESOURCEGROUP/providers/Microsoft.Network/virtualNetworks/$VNET_NAME --assignee ${ROLE_ASSIGNEE} --role "Contributor" -o table --verbose #  > /dev/null
     ###### 
     ### REMOVING FOR NOW
     ######
-    #echo "az role assignment create --scope /subscriptions/$SUBID/resourceGroups/$RESOURCEGROUP/providers/Microsoft.Network/virtualNetworks/$VNET_NAME  --assignee-object-id ${ROLE_ASSIGNEE}  --role "Contributor" --assignee-principal-type ServicePrincipal "
-    #COMMAND="az role assignment create --scope /subscriptions/$SUBID/resourceGroups/$RESOURCEGROUP/providers/Microsoft.Network/virtualNetworks/$VNET_NAME  --assignee-object-id ${ROLE_ASSIGNEE}  --role "Contributor" --assignee-principal-type ServicePrincipal "
-    #retry ${COMMAND}
+    echo "az role assignment create --scope /subscriptions/$SUBID/resourceGroups/$RESOURCEGROUP/providers/Microsoft.Network/virtualNetworks/$VNET_NAME  --assignee-object-id ${ROLE_ASSIGNEE}  --role "Contributor" --assignee-principal-type ServicePrincipal "
+    COMMAND="az role assignment create --scope /subscriptions/$SUBID/resourceGroups/$RESOURCEGROUP/providers/Microsoft.Network/virtualNetworks/$VNET_NAME  --assignee-object-id ${ROLE_ASSIGNEE}  --role "Contributor" --assignee-principal-type ServicePrincipal "
+    retry ${COMMAND}
 
     echo "done"
     exit 0
