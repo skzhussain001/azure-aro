@@ -257,7 +257,7 @@ function configure_networking(){
     az network vnet subnet update -g "$RESOURCEGROUP" --vnet-name "$VNET_NAME" -n "$CLUSTER-master" --disable-private-link-service-network-policies true -o table > /dev/null
     echo "done"
 
-    az ad sp create-for-rbac --role "Contributor" --name ${ROLE_ASSIGNEE} --scopes /subscriptions/${SUBID} /subscriptions/${SUBID}/resourceGroups/$RESOURCEGROUP /subscriptions/${SUBID}/resourceGroups/$VNET_NAME
+    az ad sp create-for-rbac --role "Contributor" --name ${ROLE_ASSIGNEE} --scopes /subscriptions/${SUBID} /subscriptions/${SUBID}/resourceGroups/$RESOURCEGROUP /subscriptions/${SUBID}/resourceGroups/$VNET_NAME --verbose 
     #az ad sp create-for-rbac --role "Network Contributor" --name ${ROLE_ASSIGNEE} --scopes /subscriptions/$SUBID/resourceGroups/$RESOURCEGROUP/providers/Microsoft.Network/virtualNetworks/$VNET_NAME
     #az ad sp create-for-rbac --role "User Access Administrator" --name ${ROLE_ASSIGNEE} --scopes /subscriptions/${SUBID}/resourceGroups/$RESOURCEGROUP /subscriptions/${SUBID}/resourceGroups/$VNET_NAME
 
