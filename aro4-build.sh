@@ -256,14 +256,21 @@ function configure_networking(){
     echo -n "Disabling 'PrivateLinkServiceNetworkPolicies' in 'Master' Subnet..."
     az network vnet subnet update -g "$RESOURCEGROUP" --vnet-name "$VNET_NAME" -n "$CLUSTER-master" --disable-private-link-service-network-policies true -o table > /dev/null
     echo "done"
+
+    az ad sp create-for-rbac --role "Contributor" --name $SP_ID --scopes /subscriptions/${SUBID} /subscriptions/${SUBID}/resourceGroups/$RESOURCEGROUP /subscriptions/${SUBID}/resourceGroups/$VNET_NAME
+
+    az ad sp create-for-rbac --role "User Access Administrator" --name $SP_ID --scopes /subscriptions/${SUBID}/resourceGroups/$RESOURCEGROUP /subscriptions/${SUBID}/resourceGroups/$VNET_NAME
+
+    az ad sp create-for-rbac --role "Network Contributor" --name $SP_ID --scopes /subs
+
     #echo -n "Adding ARO RP Contributor access to VNET..."
     az role assignment create --scope /subscriptions/$SUBID/resourceGroups/$RESOURCEGROUP/providers/Microsoft.Network/virtualNetworks/$VNET_NAME --assignee 4744ec5d-a3f8-4606-8b8f-0b75a424276a  --role "Contributor" -o table > /dev/null
     ######
     ### REMOVING FOR NOW
     ######
-    #echo "az role assignment create --scope /subscriptions/$SUBID/resourceGroups/$RESOURCEGROUP/providers/Microsoft.Network/virtualNetworks/$VNET_NAME  --assignee-object-id ${ROLE_ASSIGNEE}  --role "Contributor" --assignee-principal-type ServicePrincipal "
-    #COMMAND="az role assignment create --scope /subscriptions/$SUBID/resourceGroups/$RESOURCEGROUP/providers/Microsoft.Network/virtualNetworks/$VNET_NAME  --assignee-object-id ${ROLE_ASSIGNEE}  --role "Contributor" --assignee-principal-type ServicePrincipal "
-    #retry ${COMMAND}
+    echo "az role assignment create --scope /subscriptions/$SUBID/resourceGroups/$RESOURCEGROUP/providers/Microsoft.Network/virtualNetworks/$VNET_NAME  --assignee-object-id ${ROLE_ASSIGNEE}  --role "Contributor" --assignee-principal-type ServicePrincipal "
+    COMMAND="az role assignment create --scope /subscriptions/$SUBID/resourceGroups/$RESOURCEGROUP/providers/Microsoft.Network/virtualNetworks/$VNET_NAME  --assignee-object-id ${ROLE_ASSIGNEE}  --role "Contributor" --assignee-principal-type ServicePrincipal "
+    retry ${COMMAND}
 
     echo "done"
     exit 0
