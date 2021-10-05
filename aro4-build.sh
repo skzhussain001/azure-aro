@@ -276,13 +276,20 @@ function configure_networking(){
     #az ad sp create-for-rbac --role "Network Contributor" --name ${ROLE_ASSIGNEE} --scopes /subscriptions/$SUBID/resourceGroups/$RESOURCEGROUP/providers/Microsoft.Network/virtualNetworks/$VNET_NAME
     #az ad sp create-for-rbac --role "User Access Administrator" --name ${ROLE_ASSIGNEE} --scopes /subscriptions/${SUBID}/resourceGroups/$RESOURCEGROUP /subscriptions/${SUBID}/resourceGroups/$VNET_NAME
 
+    az ad sp create-for-rbac --name ${ROLE_ASSIGNEE} --role Contributor > serviceprincipal.json
+
+    export SP_APPID=$(jq -r .appId serviceprincipal.json)
+    export SP_PASSWD=$(jq -r '.password' serviceprincipal.json)
+
+    ROLE_ASSIGNEE_ID=$(az ad sp list --display-name testing -o json | jq -r ".[] | .objectId")
+
     #echo -n "Adding ARO RP Contributor access to VNET..."
-    az role assignment create --scope /subscriptions/$SUBID/resourceGroups/$RESOURCEGROUP/providers/Microsoft.Network/virtualNetworks/$VNET_NAME --assignee ${ROLE_ASSIGNEE} --role "Contributor" -o table --verbose #  > /dev/null
+    az role assignment create --scope /subscriptions/$SUBID/resourceGroups/$RESOURCEGROUP/providers/Microsoft.Network/virtualNetworks/$VNET_NAME --assignee ${ROLE_ASSIGNEE_ID} --role "Contributor" -o table --verbose #  > /dev/null
     ###### 
     ### REMOVING FOR NOW
     ######
-    echo "az role assignment create --scope /subscriptions/$SUBID/resourceGroups/$RESOURCEGROUP/providers/Microsoft.Network/virtualNetworks/$VNET_NAME  --assignee-object-id ${ROLE_ASSIGNEE}  --role "Contributor" --assignee-principal-type ServicePrincipal "
-    COMMAND="az role assignment create --scope /subscriptions/$SUBID/resourceGroups/$RESOURCEGROUP/providers/Microsoft.Network/virtualNetworks/$VNET_NAME  --assignee-object-id ${ROLE_ASSIGNEE}  --role "Contributor" --assignee-principal-type ServicePrincipal "
+    echo "az role assignment create --scope /subscriptions/$SUBID/resourceGroups/$RESOURCEGROUP/providers/Microsoft.Network/virtualNetworks/$VNET_NAME  --assignee-object-id ${ROLE_ASSIGNEE_ID}  --role "Contributor" --assignee-principal-type ServicePrincipal "
+    COMMAND="az role assignment create --scope /subscriptions/$SUBID/resourceGroups/$RESOURCEGROUP/providers/Microsoft.Network/virtualNetworks/$VNET_NAME  --assignee-object-id ${ROLE_ASSIGNEE_ID}  --role "Contributor" --assignee-principal-type ServicePrincipal "
     retry ${COMMAND}
 
     echo "done"
