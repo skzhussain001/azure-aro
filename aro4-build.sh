@@ -22,8 +22,8 @@ set -x
 #fi
 
 # Random string generator - don't change this.
-RAND="$(echo $RANDOM | tr '[0-9]' '[a-z]')"
-export RAND
+#RAND="$(echo $RANDOM | tr '[0-9]' '[a-z]')"
+#export RAND
 
 # Customize these variables as you need for your cluster deployment
 # If you wish to use custom DNS servers, you can place them into the variable below as space-separated entries
@@ -49,6 +49,12 @@ export VNET
 export VNET_RG
 export WORKERS
 export WORKER_SIZE
+
+if [ -z ${RAND} ];
+then 
+    echo "RAND variable node defined"
+    exit 1
+fi 
 
 if [ -z ${BUILDDATE} ];
 then 
@@ -257,7 +263,7 @@ function configure_networking(){
     az network vnet subnet update -g "$RESOURCEGROUP" --vnet-name "$VNET_NAME" -n "$CLUSTER-master" --disable-private-link-service-network-policies true -o table > /dev/null
     echo "done"
 
-    az ad sp create-for-rbac --role "Contributor" --name ${ROLE_ASSIGNEE} --scopes /subscriptions/${SUBID} /subscriptions/${SUBID}/resourceGroups/$RESOURCEGROUP /subscriptions/${SUBID}/resourceGroups/$VNET_NAME --verbose 
+    #az ad sp create-for-rbac --role "Contributor" --name ${ROLE_ASSIGNEE} --scopes /subscriptions/${SUBID} /subscriptions/${SUBID}/resourceGroups/$RESOURCEGROUP /subscriptions/${SUBID}/resourceGroups/$VNET_NAME --verbose 
     #az ad sp create-for-rbac --role "Network Contributor" --name ${ROLE_ASSIGNEE} --scopes /subscriptions/$SUBID/resourceGroups/$RESOURCEGROUP/providers/Microsoft.Network/virtualNetworks/$VNET_NAME
     #az ad sp create-for-rbac --role "User Access Administrator" --name ${ROLE_ASSIGNEE} --scopes /subscriptions/${SUBID}/resourceGroups/$RESOURCEGROUP /subscriptions/${SUBID}/resourceGroups/$VNET_NAME
 
@@ -340,7 +346,7 @@ function create_aro_cluster(){
         fi
         echo "done."
     fi
-    az ad sp create-for-rbac --name $SP_ID --role Contributor > serviceprincipal.json
+    az ad sp create-for-rbac --name ${ROLE_ASSIGNEE} --role Contributor > serviceprincipal.json
     export SP_APPID=$(jq -r .appId serviceprincipal.json)
 
     export SP_PASSWD=$(jq -r '.password' serviceprincipal.json)
