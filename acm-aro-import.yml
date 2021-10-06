@@ -11,7 +11,11 @@ container: quay.io/takinosh/aro-container:v1
 
 steps:
 - task: oc-setup@2
+  inputs:
+    connectionType: 'OpenShift Connection Service'
+    openshiftService: 'ACMHUBCLUSTER'
 - script: |
     oc status
-    cat import-aro-cluster-to-acm.sh
+    ./import-aro-cluster-to-acm.sh $(CLUSTER_NAME) $(TARGET_CLUSTER) $(TARGET_CLUSTER_TOKEN)
   displayName: 'Import Cluster into ACM'
+

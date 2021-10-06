@@ -76,3 +76,5 @@ oc get secret ${CLUSTER_NAME}-import -n ${CLUSTER_NAME} -o jsonpath={.data.impor
 
 # kubectl get pod -n open-cluster-management-agent
 # kubectl get pod -n open-cluster-management-agent-addon
+
+exit 0
