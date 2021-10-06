@@ -66,15 +66,15 @@ oc apply -f klusterlet-addon-config.yaml
 oc get secret ${CLUSTER_NAME}-import -n ${CLUSTER_NAME} -o jsonpath={.data.crds\\.yaml} | base64 --decode > klusterlet-crd.yaml
 oc get secret ${CLUSTER_NAME}-import -n ${CLUSTER_NAME} -o jsonpath={.data.import\\.yaml} | base64 --decode > import.yaml
 
-#oc login --token=${TARGET_CLUSTER_TOKEN} --server=${TARGET_CLUSTER}
-#oc status
-#oc apply -f klusterlet-crd.yaml
-#oc apply -f import.yaml
+oc login --token=${TARGET_CLUSTER_TOKEN} --server=${TARGET_CLUSTER}
+oc status
+oc apply -f klusterlet-crd.yaml
+oc apply -f import.yaml
 
-#rm -rf klusterlet-crd.yaml
-#rm -rf import.yaml
+rm -rf klusterlet-crd.yaml
+rm -rf import.yaml
 
-# kubectl get pod -n open-cluster-management-agent
-# kubectl get pod -n open-cluster-management-agent-addon
+oc get pod -n open-cluster-management-agent
+oc get pod -n open-cluster-management-agent-addon
 
 exit 0

@@ -1,5 +1,5 @@
 # Import ARO Cluster into ACM
-# Add steps that build, run tests, deploy, and more:
+# Required variables CLUSTER_NAME="clusername",TARGET_CLUSTER="target-cluster-url",TARGET_CLUSTER_TOKEN="sha256~xXxXxXxXxXxXxXxXxXxXxX"
 # https://aka.ms/yaml
 
 trigger: none
