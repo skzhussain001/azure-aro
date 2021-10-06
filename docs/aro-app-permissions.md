@@ -21,7 +21,11 @@ In that application Navigate to:
 
 Azure Red Hat OpenShift requires a minimum of 40 cores to create and run an OpenShift cluster. The default Azure resource quota for a new Azure subscription does not meet this requirement. To request an increase in your resource limit.
 
-Standard quota: Increase limits by VM series - https://docs.microsoft.com/en-us/azure/azure-portal/supportability/per-vm-quota-requests
+Standard quota: Increase limits by VM series  
+https://docs.microsoft.com/en-us/azure/azure-portal/supportability/per-vm-quota-requests
+
+Azure Red Hat OpenShift support policy  
+https://docs.microsoft.com/en-us/azure/openshift/support-policies-v4
 
 ### Links:
 * https://docs.microsoft.com/en-us/answers/questions/197819/34insufficient-privileges-to-complete-the-operatio.html

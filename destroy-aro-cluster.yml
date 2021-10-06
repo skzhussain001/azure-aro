@@ -1,10 +1,10 @@
-# Starter pipeline
-# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Delete ARO cluster
+# Delete ARO cluster with the following variables
+# CLUSTER=,LOCATION=eastus,RESOURCEGROUP==,RAND=xxxxx,
 # Add steps that build, run tests, deploy, and more:
 # https://aka.ms/yaml
 
-trigger:
-- master
+trigger: none
 
 pool:
   name: SelfHosted

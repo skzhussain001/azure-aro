@@ -33,7 +33,7 @@ DNSSERVERS=""
 #DNSSERVERS="1.2.3.4 55.55.55.55 15.15.15.15"
 INGRESSPRIVACY="Public"
 LOCATION="eastus"
-MASTER_SIZE="Standard_D8s_v3"
+MASTER_SIZE="Standard_D8s_v3" # Recommed size Standard_D8s_v3
 VNET="10.151.0.0"
 VNET_RG=""
 WORKERS="4"
@@ -360,7 +360,7 @@ function create_aro_cluster(){
     export VERSION
     az group update -g "$RESOURCEGROUP" --tags "ARO $VERSION Build Date=$BUILDDATE" --only-show-errors -o table >> /dev/null 2>&1
     echo "done."
-
+    exit 0
 }
 
 # Forward Zone Creation (if necessary)
