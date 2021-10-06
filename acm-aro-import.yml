@@ -10,8 +10,9 @@ pool:
 container:  'ubuntu-latest'
 
 steps:
-- task: Import Cluster into ACM
+- task:  oc-setup@2
 - script: |
     oc status
     cat import-aro-cluster-to-acm.sh 
+  displayName: 'Import Cluster into ACM'
   
