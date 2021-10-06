@@ -7,7 +7,7 @@ trigger: none
 pool:
   name: SelfHosted
 
-container:  'ubuntu-latest'
+container: quay.io/takinosh/aro-container:v1
 
 steps:
 - task:  oc-setup@2
