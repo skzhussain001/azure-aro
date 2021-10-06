@@ -14,10 +14,13 @@ CLUSTER_NAME=$1
 TARGET_CLUSTER=$2
 TARGET_CLUSTER_TOKEN=$3
 
+echo "Set the name of the context for hub cluster"
+oc config rename-context $(oc config current-context) hubcluster
+
 ACMHUB_CLUSTER=$(oc whoami --show-console)
 
-echo "Importing ${CLUSTER_NAME} into ${ACMHUB_CLUSTER}"
 
+echo "Creating configuration for ${CLUSTER_NAME}"
 oc status
 oc new-project ${CLUSTER_NAME}
 oc label namespace ${CLUSTER_NAME} cluster.open-cluster-management.io/managedCluster=${CLUSTER_NAME}
@@ -66,15 +69,18 @@ oc apply -f klusterlet-addon-config.yaml
 oc get secret ${CLUSTER_NAME}-import -n ${CLUSTER_NAME} -o jsonpath={.data.crds\\.yaml} | base64 --decode > klusterlet-crd.yaml
 oc get secret ${CLUSTER_NAME}-import -n ${CLUSTER_NAME} -o jsonpath={.data.import\\.yaml} | base64 --decode > import.yaml
 
+
+echo "Importing ${CLUSTER_NAME} into ${ACMHUB_CLUSTER}"
 oc login --token=${TARGET_CLUSTER_TOKEN} --server=${TARGET_CLUSTER}
+oc config rename-context $(oc config current-context) ${CLUSTER_NAME}
 oc status
-oc apply -f klusterlet-crd.yaml
-oc apply -f import.yaml
+oc apply --context=${CLUSTER_NAME}  -f klusterlet-crd.yaml
+oc apply --context=${CLUSTER_NAME}  -f import.yaml
 
 rm -rf klusterlet-crd.yaml
 rm -rf import.yaml
 
-oc get pod -n open-cluster-management-agent
-oc get pod -n open-cluster-management-agent-addon
+oc get --context=${CLUSTER_NAME} pod -n open-cluster-management-agent
+oc get --context=${CLUSTER_NAME} pod -n open-cluster-management-agent-addon
 
 exit 0
