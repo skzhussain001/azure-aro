@@ -1,0 +1,17 @@
+# Import ARO Cluster into ACM
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+trigger: none
+
+pool:
+  name: SelfHosted
+
+container:  'ubuntu-latest'
+
+steps:
+- task: Import Cluster into ACM
+- script: |
+    oc status
+    cat import-aro-cluster-to-acm.sh 
+  
