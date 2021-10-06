@@ -64,18 +64,18 @@ spec:
   version: 2.2.0
 EOF
 
-oc apply -f klusterlet-addon-config.yaml
+oc apply -f klusterlet-addon-config.yaml || exit 1
 
-oc get secret ${CLUSTER_NAME}-import -n ${CLUSTER_NAME} -o jsonpath={.data.crds\\.yaml} | base64 --decode > klusterlet-crd.yaml
-oc get secret ${CLUSTER_NAME}-import -n ${CLUSTER_NAME} -o jsonpath={.data.import\\.yaml} | base64 --decode > import.yaml
+oc get secret ${CLUSTER_NAME}-import -n ${CLUSTER_NAME} -o jsonpath={.data.crds\\.yaml} | base64 --decode > klusterlet-crd.yaml || exit 1
+oc get secret ${CLUSTER_NAME}-import -n ${CLUSTER_NAME} -o jsonpath={.data.import\\.yaml} | base64 --decode > import.yaml || exit 1
 
 
 echo "Importing ${CLUSTER_NAME} into ${ACMHUB_CLUSTER}"
 oc login --token=${TARGET_CLUSTER_TOKEN} --server=${TARGET_CLUSTER}
 oc config rename-context $(oc config current-context) ${CLUSTER_NAME}
 oc status
-oc apply --context=${CLUSTER_NAME}  -f klusterlet-crd.yaml
-oc apply --context=${CLUSTER_NAME}  -f import.yaml
+oc apply --context=${CLUSTER_NAME}  -f klusterlet-crd.yaml || exit 1
+oc apply --context=${CLUSTER_NAME}  -f import.yaml || exit 1
 
 rm -rf klusterlet-crd.yaml
 rm -rf import.yaml
