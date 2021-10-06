@@ -10,9 +10,8 @@ pool:
 container: quay.io/takinosh/aro-container:v1
 
 steps:
-- task:  oc-setup@2
+- task: oc-setup@2
 - script: |
     oc status
-    cat import-aro-cluster-to-acm.sh 
+    cat import-aro-cluster-to-acm.sh
   displayName: 'Import Cluster into ACM'
-  
