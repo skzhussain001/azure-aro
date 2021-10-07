@@ -2,7 +2,7 @@
 # https://access.redhat.com/documentation/en-us/red_hat_advanced_cluster_management_for_kubernetes/2.3/html/clusters/importing-a-target-managed-cluster-to-the-hub-cluster#importing-a-managed-cluster-with-the-cli
 ## Run command on hub cluster 
 
-if [ -ne $3 ];
+if [ -ne $5 ];
 then
   echo "Please Cluster Name."
   echo "USAGE: $0 cluster-name https://api.ocp4.example.com:6443 sha256~xXxXxXxXxXxXxXxXxXxXxXx" 
@@ -13,6 +13,8 @@ fi
 CLUSTER_NAME=$1
 TARGET_CLUSTER=$2
 TARGET_CLUSTER_TOKEN=$3
+CLUSTER_ID=$4
+ENABLE_OBSERVABILITY=$5
 
 echo "Set the name of the context for hub cluster"
 oc config rename-context $(oc config current-context) hubcluster
@@ -45,6 +47,7 @@ metadata:
   namespace: ${CLUSTER_NAME}
   labels:
     vendor: auto-detect
+    clusterid: ${CLUSTER_ID}
 spec:
   clusterName: ${CLUSTER_NAME}
   clusterNamespace: ${CLUSTER_NAME}
@@ -61,6 +64,8 @@ spec:
     enabled: true
   searchCollector:
     enabled: true
+  observabilityController:
+    enabled: ${ENABLE_OBSERVABILITY}
   version: 2.2.0
 EOF
 

@@ -1,5 +1,9 @@
 # Azure Red Hat Openshift (ARO) Deployment Code / Scripts
 
+## To Configure Pipelines Via Azure DevOps 
+![20211006102531](https://i.imgur.com/IjnLbIO.png)
+[ARO Deployments using Azure DevOps](docs/azure-devops-pipelines.md)
+
 ## Azure Red Hat OpenShift 4.x
 
 <h3>aro4-build.sh</h3>
