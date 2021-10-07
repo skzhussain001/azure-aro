@@ -14,7 +14,6 @@ CLUSTER_NAME=$1
 TARGET_CLUSTER=$2
 TARGET_CLUSTER_TOKEN=$3
 CLUSTER_ID=$4
-ENABLE_OBSERVABILITY=$5
 
 echo "Set the name of the context for hub cluster"
 oc config rename-context $(oc config current-context) hubcluster
@@ -64,8 +63,6 @@ spec:
     enabled: true
   searchCollector:
     enabled: true
-  observabilityController:
-    enabled: ${ENABLE_OBSERVABILITY}
   version: 2.2.0
 EOF
 

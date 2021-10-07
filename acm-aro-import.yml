@@ -1,5 +1,5 @@
 # Import ARO Cluster into ACM
-# Required variables CLUSTER_NAME="clusername",TARGET_CLUSTER="target-cluster-url",TARGET_CLUSTER_TOKEN="sha256~xXxXxXxXxXxXxXxXxXxXxX,CLUSTER_ID=clusterid,ENABLE_OBSERVABILITY=true"
+# Required variables CLUSTER_NAME="clusername",TARGET_CLUSTER="target-cluster-url",TARGET_CLUSTER_TOKEN="sha256~xXxXxXxXxXxXxXxXxXxXxX,CLUSTER_ID=clusterid"
 # https://aka.ms/yaml
 
 trigger: none
@@ -16,6 +16,6 @@ steps:
     openshiftService: 'ACMHUBCLUSTER'
 - script: |
     oc status
-    ./import-aro-cluster-to-acm.sh $(CLUSTER_NAME) $(TARGET_CLUSTER) $(TARGET_CLUSTER_TOKEN) $(CLUSTER_ID) $(ENABLE_OBSERVABILITY)
+    ./import-aro-cluster-to-acm.sh $(CLUSTER_NAME) $(TARGET_CLUSTER) $(TARGET_CLUSTER_TOKEN) $(CLUSTER_ID) 
   displayName: 'Import Cluster into ACM'
 
