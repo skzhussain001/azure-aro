@@ -69,6 +69,7 @@ spec:
   version: 2.2.0
 EOF
 
+cat klusterlet-addon-config.yaml
 oc apply -f klusterlet-addon-config.yaml || exit 1
 
 oc get secret ${CLUSTER_NAME}-import -n ${CLUSTER_NAME} -o jsonpath={.data.crds\\.yaml} | base64 --decode > klusterlet-crd.yaml || exit 1
