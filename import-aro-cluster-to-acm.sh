@@ -44,7 +44,7 @@ kind: KlusterletAddonConfig
 metadata:
   name: ${CLUSTER_NAME}
   namespace: ${CLUSTER_NAME}
-   labels:
+  labels:
     enviornment: ${CLUSTER_ENVIORNMENT}
 spec:
   clusterName: ${CLUSTER_NAME}
