@@ -2,7 +2,7 @@
 # https://access.redhat.com/documentation/en-us/red_hat_advanced_cluster_management_for_kubernetes/2.3/html/clusters/importing-a-target-managed-cluster-to-the-hub-cluster#importing-a-managed-cluster-with-the-cli
 ## Run command on hub cluster 
 
-if [ -ne $5 ];
+if [ -ne $4 ];
 then
   echo "Please Cluster Name."
   echo "USAGE: $0 cluster-name https://api.ocp4.example.com:6443 sha256~xXxXxXxXxXxXxXxXxXxXxXx" 
