@@ -13,7 +13,7 @@ fi
 CLUSTER_NAME=$1
 TARGET_CLUSTER=$2
 TARGET_CLUSTER_TOKEN=$3
-CLUSTER_ID=$4
+CLUSTER_ENVIORNMENT=$4
 
 echo "Set the name of the context for hub cluster"
 oc config rename-context $(oc config current-context) hubcluster
@@ -44,9 +44,8 @@ kind: KlusterletAddonConfig
 metadata:
   name: ${CLUSTER_NAME}
   namespace: ${CLUSTER_NAME}
-  labels:
-    vendor: auto-detect
-    clusterid: ${CLUSTER_ID}
+   labels:
+    enviornment: ${CLUSTER_ENVIORNMENT}
 spec:
   clusterName: ${CLUSTER_NAME}
   clusterNamespace: ${CLUSTER_NAME}
@@ -55,8 +54,8 @@ spec:
   certPolicyController:
     enabled: true
   clusterLabels:
-    cloud: auto-detect
-    vendor: auto-detect
+    cloud: Azure
+    vendor: OpenShift
   iamPolicyController:
     enabled: true
   policyController:
