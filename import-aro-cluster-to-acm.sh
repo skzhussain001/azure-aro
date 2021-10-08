@@ -96,7 +96,7 @@ for POD in `cat klusterlet-work-agent.txt`; do
 done 
 
 
-oc patch --context=hubcluster ManagedCluster aro-caibg   --type=json -p='[{"op": "add", "path": "/metadata/labels/environment", "value": "'${CLUSTER_ENVIORNMENT}'"}]'
+oc patch --context=hubcluster ManagedCluster ${CLUSTER_NAME} --type=json -p='[{"op": "add", "path": "/metadata/labels/environment", "value": "'${CLUSTER_ENVIORNMENT}'"}]'
 rm -rf klusterlet-registration-agent.txt
 rm -rf klusterlet-work-agent.txt
 rm -rf klusterlet-crd.yaml
