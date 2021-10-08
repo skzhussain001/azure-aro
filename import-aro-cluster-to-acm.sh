@@ -60,7 +60,7 @@ spec:
     enabled: true
   searchCollector:
     enabled: true
-  version: 2.2.0
+  version: 2.3.2
 EOF
 
 cat klusterlet-addon-config.yaml
