@@ -2,6 +2,11 @@
 # https://access.redhat.com/documentation/en-us/red_hat_advanced_cluster_management_for_kubernetes/2.3/html/clusters/importing-a-target-managed-cluster-to-the-hub-cluster#importing-a-managed-cluster-with-the-cli
 ## Run command on hub cluster 
 
+function waitforme() {
+  while [[ $(oc get pods $1 -n $2 -o 'jsonpath={..status.conditions[?(@.type=="Ready")].status}') != "True" ]]; do echo "waiting for pod" && sleep 5; done
+}
+
+
 if [ -ne $4 ];
 then
   echo "Please Cluster Name."
@@ -9,11 +14,11 @@ then
   exit 1
 fi 
 
-
 CLUSTER_NAME=$1
 TARGET_CLUSTER=$2
 TARGET_CLUSTER_TOKEN=$3
 CLUSTER_ENVIORNMENT=$4
+NAMESPACE1=open-cluster-management-agent
 
 echo "Set the name of the context for hub cluster"
 oc config rename-context $(oc config current-context) hubcluster
@@ -76,7 +81,24 @@ oc config rename-context $(oc config current-context) ${CLUSTER_NAME}
 oc status
 oc apply --context=${CLUSTER_NAME}  -f klusterlet-crd.yaml || exit 1
 oc apply --context=${CLUSTER_NAME}  -f import.yaml || exit 1
+KUSTERLET_POD=$(oc get pods -n ${NAMESPACE1} | grep  -E '(klusterlet-[0-9|a-z]{10}-[0-9|a-z]{5})' | awk '{print $1}')
+echo "Waiting for $KUSTERLET_POD"
+waitforme $KUSTERLET_POD ${NAMESPACE1}
+oc get pods -n ${NAMESPACE1} | grep  -E '(klusterlet-registration-agent-[0-9|a-z]{10}-[0-9|a-z]{5})' | awk '{print $1}'> klusterlet-registration-agent.txt
+for POD in `cat klusterlet-registration-agent.txt`; do
+  echo "Waiting for $POD"
+  waitforme $POD ${NAMESPACE1}
+done 
+oc get pods -n ${NAMESPACE1} | grep  -E '(klusterlet-work-agent-[0-9|a-z]{10}-[0-9|a-z]{5})' | awk '{print $1}' > klusterlet-work-agent.txt
+for POD in `cat klusterlet-work-agent.txt`; do
+  echo "Waiting for $POD"
+  waitforme $POD ${NAMESPACE1}
+done 
 
+
+oc patch ManagedCluster aro-caibg   --type=json -p='[{"op": "add", "path": "/metadata/labels/environment", "value": "'${CLUSTER_ENVIORNMENT}'"}]'
+rm -rf klusterlet-registration-agent.txt
+rm -rf klusterlet-work-agent.txt
 rm -rf klusterlet-crd.yaml
 rm -rf import.yaml
 

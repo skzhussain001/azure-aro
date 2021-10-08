@@ -1,4 +1,5 @@
 # ARO Deployments using Azure DevOps
+![20211008105345](https://i.imgur.com/JPUqMRF.png)
 ### Create ARO Pipelines project 
 ![20211007092347](https://i.imgur.com/pVUOMkB.png)
 
