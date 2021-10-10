@@ -8,7 +8,7 @@ function waitforme() {
 }
 
 
-if [ $# -ne 4 ];
+if [ $# -ne 5 ];
 then
   echo "Please Cluster Name."
   echo "USAGE: $0 cluster-name https://api.ocp4.example.com:6443 sha256~xXxXxXxXxXxXxXxXxXxXxXx" 
@@ -19,6 +19,7 @@ CLUSTER_NAME=$1
 TARGET_CLUSTER=$2
 TARGET_CLUSTER_TOKEN=$3
 CLUSTER_ENVIORNMENT=$4
+SKIP_TLS_VERIFY=$5
 NAMESPACE1=open-cluster-management-agent
 
 echo "Set the name of the context for hub cluster"
@@ -77,7 +78,7 @@ oc get secret ${CLUSTER_NAME}-import -n ${CLUSTER_NAME} -o jsonpath={.data.impor
 
 
 echo "Importing ${CLUSTER_NAME} into ${ACMHUB_CLUSTER}"
-oc login --token=${TARGET_CLUSTER_TOKEN} --server=${TARGET_CLUSTER}
+oc login --token=${TARGET_CLUSTER_TOKEN} --server=${TARGET_CLUSTER} --insecure-skip-tls-verify=${SKIP_TLS_VERIFY}
 oc config --context=${CLUSTER_NAME} rename-context $(oc config current-context) ${CLUSTER_NAME}
 oc config use-context ${CLUSTER_NAME}
 oc status

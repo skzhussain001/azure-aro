@@ -1,5 +1,5 @@
 # Import ARO Cluster into ACM
-# Required variables CLUSTER_NAME="clusername",TARGET_CLUSTER="target-cluster-url",TARGET_CLUSTER_TOKEN="sha256~xXxXxXxXxXxXxXxXxXxXxX,CLUSTER_ENVIORNMENT=dev"
+# Required variables CLUSTER_NAME="clusername",TARGET_CLUSTER="target-cluster-url",TARGET_CLUSTER_TOKEN="sha256~xXxXxXxXxXxXxXxXxXxXxX,CLUSTER_ENVIORNMENT=dev,SKIP_TLS_VERIFY=true"
 # https://aka.ms/yaml
 
 trigger: none
