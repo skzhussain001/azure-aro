@@ -78,7 +78,7 @@ oc get secret ${CLUSTER_NAME}-import -n ${CLUSTER_NAME} -o jsonpath={.data.impor
 
 echo "Importing ${CLUSTER_NAME} into ${ACMHUB_CLUSTER}"
 oc login --token=${TARGET_CLUSTER_TOKEN} --server=${TARGET_CLUSTER}
-oc config rename-context $(oc config current-context) ${CLUSTER_NAME}
+oc config --context=${CLUSTER_NAME} rename-context $(oc config current-context) ${CLUSTER_NAME}
 oc config use-context ${CLUSTER_NAME}
 oc status
 oc apply --context=${CLUSTER_NAME}  -f klusterlet-crd.yaml || exit 1
