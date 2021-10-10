@@ -1,6 +1,7 @@
 #!/bin/bash 
 # https://access.redhat.com/documentation/en-us/red_hat_advanced_cluster_management_for_kubernetes/2.3/html/clusters/importing-a-target-managed-cluster-to-the-hub-cluster#importing-a-managed-cluster-with-the-cli
 ## Run command on hub cluster 
+set -xe 
 
 function waitforme() {
   while [[ $(oc get pods $1 -n $2 -o 'jsonpath={..status.conditions[?(@.type=="Ready")].status}') != "True" ]]; do echo "waiting for pod" && sleep 5; done
