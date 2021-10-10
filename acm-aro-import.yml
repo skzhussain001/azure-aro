@@ -16,6 +16,6 @@ steps:
     openshiftService: 'ACMHUBCLUSTER'
 - script: |
     oc status
-    ./import-aro-cluster-to-acm.sh $(CLUSTER_NAME) $(TARGET_CLUSTER) $(TARGET_CLUSTER_TOKEN) $(CLUSTER_ENVIORNMENT) 
+    ./import-aro-cluster-to-acm.sh $(CLUSTER_NAME) $(TARGET_CLUSTER) $(TARGET_CLUSTER_TOKEN) $(CLUSTER_ENVIORNMENT) $(SKIP_TLS_VERIFY)
   displayName: 'Import Cluster into ACM'
 
