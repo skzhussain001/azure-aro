@@ -78,6 +78,7 @@ oc get secret ${CLUSTER_NAME}-import -n ${CLUSTER_NAME} -o jsonpath={.data.impor
 echo "Importing ${CLUSTER_NAME} into ${ACMHUB_CLUSTER}"
 oc login --token=${TARGET_CLUSTER_TOKEN} --server=${TARGET_CLUSTER}
 oc config rename-context $(oc config current-context) ${CLUSTER_NAME}
+oc config use-context ${CLUSTER_NAME}
 oc status
 oc apply --context=${CLUSTER_NAME}  -f klusterlet-crd.yaml || exit 1
 oc apply --context=${CLUSTER_NAME}  -f import.yaml || exit 1
@@ -95,14 +96,15 @@ for POD in `cat klusterlet-work-agent.txt`; do
   waitforme $POD ${NAMESPACE1}
 done 
 
+oc get --context=${CLUSTER_NAME} pod -n open-cluster-management-agent
+oc get --context=${CLUSTER_NAME} pod -n open-cluster-management-agent-addon
 
+
+oc config use-context hubcluster
 oc patch --context=hubcluster ManagedCluster ${CLUSTER_NAME} --type=json -p='[{"op": "add", "path": "/metadata/labels/environment", "value": "'${CLUSTER_ENVIORNMENT}'"}]'
 rm -rf klusterlet-registration-agent.txt
 rm -rf klusterlet-work-agent.txt
 rm -rf klusterlet-crd.yaml
 rm -rf import.yaml
-
-oc get --context=${CLUSTER_NAME} pod -n open-cluster-management-agent
-oc get --context=${CLUSTER_NAME} pod -n open-cluster-management-agent-addon
 
 exit 0

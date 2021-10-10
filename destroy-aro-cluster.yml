@@ -1,6 +1,6 @@
 # Delete ARO cluster
 # Delete ARO cluster with the following variables
-# CLUSTER=,LOCATION=eastus,RESOURCEGROUP==,RAND=xxxxx,
+# CLUSTER=,LOCATION=eastus,RESOURCEGROUP=,RAND=xxxxx,
 # Add steps that build, run tests, deploy, and more:
 # https://aka.ms/yaml
 
