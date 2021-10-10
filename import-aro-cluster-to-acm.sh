@@ -7,7 +7,7 @@ function waitforme() {
 }
 
 
-if [ -ne $4 ];
+if [ $# -ne 4 ];
 then
   echo "Please Cluster Name."
   echo "USAGE: $0 cluster-name https://api.ocp4.example.com:6443 sha256~xXxXxXxXxXxXxXxXxXxXxXx" 
