@@ -13,6 +13,8 @@ container: quay.io/takinosh/aro-container:v1
 
 variables:
 - group: aro-deployment-variables
+- name: CREATEPULLSECRET
+  value: $(CREATEPULLSECRET)
 
 steps:
 - task: AzureCLI@2
@@ -23,8 +25,6 @@ steps:
     scriptPath: 'aro4-build.sh'
     arguments: '--register-resource-providers'
     addSpnToEnvironment: true
-    inlineScript: |
-      export CREATEPULLSECRET=$(CREATEPULLSECRET)
   displayName: 'Register the resource providers'
 
 - task: AzureCLI@2
