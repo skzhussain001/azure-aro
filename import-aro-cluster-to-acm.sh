@@ -11,7 +11,7 @@ function waitforme() {
 if [ $# -ne 5 ];
 then
   echo "Please Cluster Name."
-  echo "USAGE: $0 cluster-name https://api.ocp4.example.com:6443 sha256~xXxXxXxXxXxXxXxXxXxXxXx" 
+  echo "USAGE: $0 cluster-name https://api.ocp4.example.com:6443 sha256~xXxXxXxXxXxXxXxXxXxXxXx dev true" 
   exit 1
 fi 
 
@@ -103,6 +103,8 @@ oc get --context=${CLUSTER_NAME} pod -n open-cluster-management-agent-addon
 
 
 oc config use-context hubcluster
+oc patch --context=hubcluster ManagedCluster ${CLUSTER_NAME} --type=json -p='[{"op": "add", "path": "/metadata/labels/vendor", "value": "OpenShift"}]'
+oc patch --context=hubcluster ManagedCluster ${CLUSTER_NAME} --type=json -p='[{"op": "add", "path": "/metadata/labels/cloud", "value": "Azure"}]'
 oc patch --context=hubcluster ManagedCluster ${CLUSTER_NAME} --type=json -p='[{"op": "add", "path": "/metadata/labels/environment", "value": "'${CLUSTER_ENVIORNMENT}'"}]'
 rm -rf klusterlet-registration-agent.txt
 rm -rf klusterlet-work-agent.txt
