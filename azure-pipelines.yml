@@ -13,8 +13,6 @@ container: quay.io/takinosh/aro-container:v1
 
 variables:
 - group: aro-deployment-variables
-- name: CREATEPULLSECRET
-  value: $(CREATEPULLSECRET)
 
 steps:
 - task: AzureCLI@2
