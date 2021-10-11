@@ -37,6 +37,8 @@ steps:
     scriptPath: 'aro4-build.sh'
     arguments: '--configure-networking'
     addSpnToEnvironment: true
+  env:
+    CREATEPULLSECRET: $(CREATEPULLSECRET)
   displayName: 'Create a virtual network containing two empty subnets'
 - task: AzureCLI@2
   inputs:
@@ -46,4 +48,6 @@ steps:
     scriptPath: 'aro4-build.sh'
     arguments: '--create-aro-cluster'
     addSpnToEnvironment: true
+  env:
+    CREATEPULLSECRET: $(CREATEPULLSECRET)
   displayName: 'Deploy ARO Cluster'
