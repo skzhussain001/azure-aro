@@ -20,12 +20,11 @@ steps:
     azureSubscription: 'Azure subscription 1(6)(1b84a886-709a-4b1b-98d6-d00f7f65452e)'
     scriptType: 'bash'
     scriptLocation: 'scriptPath'
-    scriptPath: 'aro4-build.sh'
+    scriptPath: 'aro4-build.sh $(CREATEPULLSECRET)'
     arguments: '--register-resource-providers'
     addSpnToEnvironment: true
   displayName: 'Register the resource providers'
-  env:
-    CREATEPULLSECRET: $(CREATEPULLSECRET)
+
 - task: AzureCLI@2
   inputs:
     azureSubscription: 'Azure subscription 1(6)(1b84a886-709a-4b1b-98d6-d00f7f65452e)'

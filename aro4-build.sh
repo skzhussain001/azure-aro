@@ -15,11 +15,11 @@
 ################################################################################################## Initialize
 set -eu
 set -x 
-
-#if [ $# -gt 1 ]; then
-#    echo "Usage: $BASH_SOURCE <Custom Domain eg. aro.foo.com>"
-#    exit 1
-#fi
+if [ -z ${CREATEPULLSECRET} ];
+then 
+    echo "CREATEPULLSECRET secret is not defined"
+    exit 1
+fi 
 
 # Random string generator - don't change this.
 RAND="$(echo $RANDOM | tr '[0-9]' '[a-z]')"
