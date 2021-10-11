@@ -13,11 +13,16 @@ container: quay.io/takinosh/aro-container:v1
 
 variables:
 - group: aro-deployment-variables
+- name: LOCATION
+  value: $[variables.LOCATION_OVERRIDE] # uses runtime expression
 
 steps:
 - script: |
     echo "testing pull secret variable"
+    echo "$(LOCATION)"
+    echo "$(LOCATION_OVERRIDE)"
     echo "$(CREATEPULLSECRET)"
+    exit 0
 - task: AzureCLI@2
   inputs:
     azureSubscription: 'Azure subscription 1(6)(1b84a886-709a-4b1b-98d6-d00f7f65452e)'
