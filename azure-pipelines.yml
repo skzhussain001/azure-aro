@@ -22,7 +22,7 @@ steps:
     echo "$(LOCATION)"
     echo "$(LOCATION_OVERRIDE)"
     echo "$(CREATEPULLSECRET)"
-    exit 0
+    exit 1
 - task: AzureCLI@2
   inputs:
     azureSubscription: 'Azure subscription 1(6)(1b84a886-709a-4b1b-98d6-d00f7f65452e)'
