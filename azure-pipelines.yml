@@ -14,7 +14,7 @@ container: quay.io/takinosh/aro-container:v1
 variables:
 - group: aro-deployment-variables
 - name: CREATEPULLSECRET
-  value: $CREATEPULLSECRET # uses runtime expression
+  value: $(CREATEPULLSECRET) # uses runtime expression
 
 steps:
 - task: AzureCLI@2
